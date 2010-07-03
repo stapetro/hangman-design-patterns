@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scoreboards>
+	<scoreboard level_id="1">
+		<player>
+			<name>stas</name>
+			<total_mistakes>3</total_mistakes>			
+		</player>
+		</scoreboard>
+	<scoreboard level_id="2"></scoreboard>
+</scoreboards>

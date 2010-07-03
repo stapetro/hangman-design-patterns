@@ -17,7 +17,7 @@ public class ScoreBoard {
 	private List<Player> topPlayers;
 
 	public ScoreBoard() {
-		//TODO Score board size to be initialized from configuration files.
+		//TODO Score board size to be initialized from settings.xml
 		topPlayers = new ArrayList<Player>(this.size+1);
 	}
 
