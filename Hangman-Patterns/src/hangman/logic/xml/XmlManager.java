@@ -14,8 +14,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Builder factory
- * Manages XML document tree.
+ * Builder factory Manages XML document tree.
  * 
  * @author Stanislav Petrov
  * 
@@ -54,13 +53,13 @@ public class XmlManager {
 	public Document getXmlDocument() {
 		return xmlDocument;
 	}
-	
+
 	private XmlManager(String filePath) throws ParserConfigurationException,
-	SAXException, IOException {
+			SAXException, IOException {
 		this.documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		try {
 			this.documentBuilder = this.documentBuilderFactory
-			.newDocumentBuilder();
+					.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw e;
 		}
@@ -89,7 +88,7 @@ public class XmlManager {
 	public Node getAttributeByNode(Node xmlNode, String attributeName) {
 		return getAttribute(xmlNode, attributeName, null);
 	}
-	
+
 	private void parseXmlFile(String filePath) throws SAXException, IOException {
 		if (this.documentBuilder != null) {
 			this.validationHandler = new ValidationHandler();
@@ -103,7 +102,7 @@ public class XmlManager {
 				throw e;
 			}
 		}
-	}	
+	}
 
 	/**
 	 * Finds XML node by specifying attribute name and value.
@@ -123,20 +122,19 @@ public class XmlManager {
 			if (attribute != null) {
 				return root;
 			}
-		} else {
-			if (root.hasChildNodes() == true) {
-				NodeList children = root.getChildNodes();
-				int size = children.getLength();
-				Node foundNode = null;
-				Node currentNode = null;
-				for (int index = 0; index < size; index++) {
-					currentNode = children.item(index);
-					if (currentNode.getNodeType() == Element.ELEMENT_NODE) {
-						foundNode = findNodeByAttribute(currentNode, attrName,
-								attrValue);
-						if (foundNode != null) {
-							return foundNode;
-						}
+		}
+		if (root.hasChildNodes() == true) {
+			NodeList children = root.getChildNodes();
+			int size = children.getLength();
+			Node foundNode = null;
+			Node currentNode = null;
+			for (int index = 0; index < size; index++) {
+				currentNode = children.item(index);
+				if (currentNode.getNodeType() == Element.ELEMENT_NODE) {
+					foundNode = findNodeByAttribute(currentNode, attrName,
+							attrValue);
+					if (foundNode != null) {
+						return foundNode;
 					}
 				}
 			}
