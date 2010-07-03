@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levels>
+	<level id="1">
+		<name>easy</name>
+		<word_length>8</word_length>
+		<total_mistakes>6</total_mistakes>
+	</level>
+	<level id="2">
+		<name>medium</name>
+		<word_length>10</word_length>
+		<total_mistakes>4</total_mistakes>
+	</level>	
+	<level id="3">
+		<name>hard</name>
+		<word_length>14</word_length>
+		<total_mistakes>3</total_mistakes>
+	</level>		
+</levels>
