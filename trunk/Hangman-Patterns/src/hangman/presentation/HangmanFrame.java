@@ -22,13 +22,13 @@ public class HangmanFrame extends JFrame {
 	private static final String SAVE_GAME_STR = "saveGame";
 	private static final String EXIT_STR = "exit";
 	private static final String GAME_OPTIONS_STR = "gameOptions";
-	private static final String REVEAL_LETTER_STR = "revealLetter";
+	private static final String REVEAL_LETTER_STR = "revealLetter";  //  @jve:decl-index=0:
 	private static final String REVEAL_WORD_STR = "revealWord";
 
 	/**
 	 * Resource Bundle object for internationalization
 	 */
-	private ResourceBundle resourceBundle;
+	private ResourceBundle resourceBundle;  //  @jve:decl-index=0:
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;

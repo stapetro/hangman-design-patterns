@@ -16,7 +16,7 @@ public class LanguageResourcesFactory {
 	/**
 	 * Resource bundle base name
 	 */
-	private static final String RESOURCE_BUNDLE_FILE = "Hangman";
+	private static final String RESOURCE_BUNDLE_FILE = "i18n.Hangman";
 
 	/**
 	 * Provide a resource bundle object for the specified language settings in
@@ -42,7 +42,6 @@ public class LanguageResourcesFactory {
 				.getInstance();
 		LanguageItem languageConfiguration = persistenceFacade
 				.getCurrentLanguage();
-
 		String languageCode = languageConfiguration.getLanguageCode();
 		String countryCode = languageConfiguration.getCountryCode();
 		Locale locale = new Locale(languageCode, countryCode);

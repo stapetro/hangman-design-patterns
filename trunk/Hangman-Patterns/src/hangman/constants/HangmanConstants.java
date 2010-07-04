@@ -27,6 +27,7 @@ public class HangmanConstants implements IConfigurationItemProperty {
 	public static final String CONFIG_ATTR_NAME_LEVELS = "levels";
 	public static final String CONFIG_ATTR_NAME_CATEGORIES = "categories";
 	public static final String CONFIG_ATTR_NAME_WORDS = "words";
+	public static final String CONFIG_ATTR_NAME_SCORE_BOARD = "scoreboard";
 	
 	public static final String SETTINGS_LANGUAGE = "lang";
 	public static final String SETTINGS_LEVEL = "level";
@@ -35,5 +36,9 @@ public class HangmanConstants implements IConfigurationItemProperty {
 	public static final String LEVEL_NODE_NAME = "level";
 	
 	public static final int DEFAULT_SCORE_BOARD_SIZE = 5;
+	/**
+	 * Used in scoreboard.xml
+	 */
+	public static final String SCORE_BOARD_LEVEL_ID_ATTR = "level_id";
 
 }
