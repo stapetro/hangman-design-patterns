@@ -1,14 +1,18 @@
 package hangman.persistence;
 
+import hangman.constants.CategoryItemProperty;
 import hangman.constants.HangmanConstants;
+import hangman.constants.LanguageItemProperty;
+import hangman.constants.LevelItemProperty;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
 import hangman.logic.config.ConfigurationParser;
-import hangman.logic.config.LanguageConfigurationParser;
-import hangman.logic.config.LevelConfigurationParser;
 import hangman.logic.config.SettingsParser;
+import hangman.logic.config.WordParser;
+import hangman.logic.config.item.ConfigurationItemParrserFactory;
+import hangman.logic.config.item.IConfigurationItemParser;
 
 import java.util.List;
 
@@ -16,17 +20,26 @@ import java.util.List;
 public class PersistenceFacade implements IPersistenceFacade {
 
 	private ConfigurationParser configurationParser;
-	private LanguageConfigurationParser langConfigParser;
+	private IConfigurationItemParser langConfigParser;
+	private IConfigurationItemParser levelConfigParser;
+	private IConfigurationItemParser categoryParser;
 	private SettingsParser settingsParser;
-	private LevelConfigurationParser levelConfigParser;
+	private WordParser wordParser;
 
 	public PersistenceFacade() {
 		this.configurationParser = new ConfigurationParser();
-		this.langConfigParser = new LanguageConfigurationParser(
-				this.configurationParser);
+		this.langConfigParser = ConfigurationItemParrserFactory
+				.newConfigurationItemParser(this.configurationParser,
+						LanguageItemProperty.ID);
+		this.levelConfigParser = ConfigurationItemParrserFactory
+				.newConfigurationItemParser(this.configurationParser,
+						LevelItemProperty.ID);
+		this.categoryParser = ConfigurationItemParrserFactory
+				.newConfigurationItemParser(this.configurationParser,
+						CategoryItemProperty.ID);
 		this.settingsParser = new SettingsParser(this.configurationParser);
-		this.levelConfigParser = new LevelConfigurationParser(
-				this.configurationParser);
+		this.wordParser = new WordParser(this.configurationParser,
+				this.langConfigParser, this.categoryParser);
 	}
 
 	@Override
@@ -43,22 +56,25 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public List<ConfigurationItem> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.categoryParser.getConfigurationItems();
 	}
 
 	@Override
 	public LanguageItem getCurrentLanguage() {
 		Integer langId = this.settingsParser.getCurrentLanguageId();
 		if (langId != null) {
-			return this.langConfigParser.getLanguageById(langId);
+			ConfigurationItem configItem = this.langConfigParser
+					.getConfigurationItemById(langId);
+			if (configItem != null && configItem instanceof LanguageItem) {
+				return (LanguageItem) configItem;
+			}
 		}
 		return null;
 	}
 
 	@Override
-	public List<LanguageItem> getLanguages() {
-		return this.langConfigParser.getLanguages();
+	public List<ConfigurationItem> getLanguages() {
+		return this.langConfigParser.getConfigurationItems();
 	}
 
 	@Override
@@ -77,7 +93,11 @@ public class PersistenceFacade implements IPersistenceFacade {
 	public LevelItem getCurrentLevel() {
 		Integer levelId = this.settingsParser.getCurrentLevelId();
 		if (levelId != null) {
-			return this.levelConfigParser.getLevelById(levelId);
+			ConfigurationItem configItem = this.levelConfigParser
+					.getConfigurationItemById(levelId);
+			if (configItem != null && configItem instanceof LevelItem) {
+				return (LevelItem) configItem;
+			}
 		}
 		return null;
 	}
@@ -93,14 +113,13 @@ public class PersistenceFacade implements IPersistenceFacade {
 	}
 
 	@Override
-	public List<LevelItem> getLevels() {
-		return this.levelConfigParser.getLevels();
+	public List<ConfigurationItem> getLevels() {
+		return this.levelConfigParser.getConfigurationItems();
 	}
 
 	@Override
 	public List<WordItem> getWordsByLanguage(int langaugeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.wordParser.getWordsByLanguage(langaugeId);
 	}
 
 }

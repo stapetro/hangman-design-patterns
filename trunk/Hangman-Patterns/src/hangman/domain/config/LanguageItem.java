@@ -52,7 +52,7 @@ public class LanguageItem extends ConfigurationItem {
 	@Override
 	public String toString() {
 		return String.format(
-				"Id: %d, Lang code: %s, Country code: %s, Desc: %s%n", getId(),
+				"Id: %d, Lang code: %s, Country code: %s, Desc: %s", getId(),
 				this.languageCode, this.countryCode, getDescription());
 	}
 

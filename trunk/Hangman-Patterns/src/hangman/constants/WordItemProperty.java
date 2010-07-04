@@ -1,6 +1,6 @@
 package hangman.constants;
 
-public enum WordItemProperty {
+public enum WordItemProperty implements IConfigurationItemProperty {
 
 	LANGUAGE_ID("lang_id"), CATEGORY_ID("category_id"), CONTENT("content"), PROVERB(
 			"proverb");
