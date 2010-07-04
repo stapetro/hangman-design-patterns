@@ -1,5 +1,9 @@
 package hangman.domain;
 
+import hangman.constants.PlayerProperty;
+
+import java.util.HashMap;
+
 /**
  * Represents player of hangman game.
  * 
@@ -27,6 +31,20 @@ public class Player implements Comparable<Player> {
 		this.cheatTheGame = player.isCheatTheGame();
 	}
 
+	public Player(HashMap<String, String> playerProperties) {
+		if (playerProperties.size() > 0) {
+			PlayerProperty[] playerPropertyNames = PlayerProperty.values();
+			String propValue = null;
+			for (PlayerProperty playerPropName : playerPropertyNames) {
+				propValue = playerProperties.get(playerPropName.toString());
+				if (propValue != null) {
+					setProperty(playerPropName, propValue);
+				}
+			}
+		}
+
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -42,17 +60,34 @@ public class Player implements Comparable<Player> {
 	public boolean isCheatTheGame() {
 		return this.cheatTheGame;
 	}
-	
+
 	public Integer getTotalMistakes() {
 		return this.totalMistakes;
-	}	
+	}
 
 	public void incrementTotalMistakes() {
 		this.totalMistakes++;
 	}
 
 	@Override
-	public int compareTo(Player otherPlayer) {		
+	public int compareTo(Player otherPlayer) {
 		return this.totalMistakes.compareTo(otherPlayer.getTotalMistakes());
+	}
+
+	private void setProperty(PlayerProperty playerPropName, String propValue) {
+		switch (playerPropName) {
+		case NAME:
+			this.name = propValue;
+			break;
+		case TOTAL_MISTAKES:
+			try {
+				this.totalMistakes = Integer.valueOf(propValue);
+			} catch (NumberFormatException ex) {
+				System.out.println("Total mistakes property value '"
+						+ propValue + "' cannot be parsed.");
+				ex.printStackTrace();
+			}
+			break;
+		}
 	}
 }
