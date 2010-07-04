@@ -73,8 +73,16 @@ public class XmlManager {
 		return languageNodes;
 	}
 
+	public List<Node> getNodesByAttribute(String attributeName,
+			String attributeValue) {
+		List<Node> foundNodes = new ArrayList<Node>();
+		findNodeByAttribute(this.root, attributeName, attributeValue,
+				foundNodes);
+		return foundNodes;
+	}
+
 	/**
-	 * Gets XML node by specifying its attribute name.
+	 * Gets first found XML node by specifying its attribute name and value.
 	 * 
 	 * @param attributeName
 	 * @param attributeValue
@@ -83,9 +91,14 @@ public class XmlManager {
 	 * @return
 	 */
 	public Node getNodeByAttribute(String attributeName, String attributeValue) {
-		return findNodeByAttribute(this.root, attributeName, attributeValue);
+		List<Node> foundNodes = getNodesByAttribute(attributeName,
+				attributeValue);
+		if (foundNodes.size() > 0) {
+			return foundNodes.get(0);
+		}
+		return null;
 	}
-	
+
 	public NodeList getNodesByName(String nodeName) {
 		NodeList foundNodes = this.xmlDocument.getElementsByTagName(nodeName);
 		return foundNodes;
@@ -130,31 +143,26 @@ public class XmlManager {
 	 *            Attribute value
 	 * @return XML node if found, or null - otherwise.
 	 */
-	private Node findNodeByAttribute(Node root, String attrName,
-			String attrValue) {
+	private void findNodeByAttribute(Node root, String attrName,
+			String attrValue, List<Node> foundNodes) {
 		if (root.hasAttributes() == true) {
 			Node attribute = getAttribute(root, attrName, attrValue);
 			if (attribute != null) {
-				return root;
+				foundNodes.add(root);
 			}
 		}
 		if (root.hasChildNodes() == true) {
 			NodeList children = root.getChildNodes();
 			int size = children.getLength();
-			Node foundNode = null;
 			Node currentNode = null;
 			for (int index = 0; index < size; index++) {
 				currentNode = children.item(index);
 				if (currentNode.getNodeType() == Element.ELEMENT_NODE) {
-					foundNode = findNodeByAttribute(currentNode, attrName,
-							attrValue);
-					if (foundNode != null) {
-						return foundNode;
-					}
+					findNodeByAttribute(currentNode, attrName, attrValue,
+							foundNodes);
 				}
 			}
 		}
-		return null;
 	}
 
 	private void findNodesByAttribute(Node root, String attrName,
