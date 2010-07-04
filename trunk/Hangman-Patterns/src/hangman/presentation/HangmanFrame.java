@@ -43,6 +43,7 @@ public class HangmanFrame extends JFrame {
 	
 	private HangmanPanel hangmanPanel;
 	private ConsolePanel consolePanel;
+	private WordPanel wordsPanel;
 
 	/**
 	 * This is the default constructor
@@ -60,10 +61,14 @@ public class HangmanFrame extends JFrame {
 	 */
 	private void initialize() {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
+		
 		this.setSize(652, 452);
 		this.setJMenuBar(getMenu());
 		this.setContentPane(getJContentPane());
 		this.setTitle(resourceBundle.getString(HANGMAN_STR));
+		
+		wordsPanel = new WordPanel();
+		jContentPane.add(wordsPanel, BorderLayout.SOUTH);
 	}
 
 	/**
@@ -78,6 +83,7 @@ public class HangmanFrame extends JFrame {
 		//add the console panel
 		consolePanel = new ConsolePanel();
 		jContentPane.add(consolePanel, BorderLayout.EAST);
+		
 	}
 
 	/**
