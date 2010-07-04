@@ -1,13 +1,38 @@
 package hangman.presentation;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
+import hangman.languages.LanguageResourcesFactory;
 
+import java.awt.BorderLayout;
+import java.util.ResourceBundle;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+
+/**
+ * This is the main JFrame container for Hangman.
+ */
 public class HangmanFrame extends JFrame {
+	
+	private static final String GAME_STR = "game";
+	private static final String NEW_GAME_STR = "newGame";
+	private static final String SAVE_GAME_STR = "saveGame";
+	private static final String EXIT_STR = "exit";
+	
+	/**
+	 * Resource Bundle object for internationalization
+	 */
+	private ResourceBundle resourceBundle;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
+	private JMenuBar menu = null;
+	private JMenu gameMenu = null;
+	private JMenuItem newGameMenuItem = null;
+	private JMenuItem saveGameMenuItem = null;
+	private JMenuItem exitMenuItem = null;
 
 	/**
 	 * This is the default constructor
@@ -23,7 +48,9 @@ public class HangmanFrame extends JFrame {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(300, 200);
+		resourceBundle = LanguageResourcesFactory.getLanguageResource();
+		this.setSize(436, 276);
+		this.setJMenuBar(getMenu());
 		this.setContentPane(getJContentPane());
 		this.setTitle("JFrame");
 	}
@@ -41,4 +68,72 @@ public class HangmanFrame extends JFrame {
 		return jContentPane;
 	}
 
-}
+	/**
+	 * This method initializes menu
+	 * 
+	 * @return javax.swing.JMenuBar
+	 */
+	private JMenuBar getMenu() {
+		if (menu == null) {
+			menu = new JMenuBar();
+			menu.add(getGameMenu());
+		}
+		return menu;
+	}
+
+	/**
+	 * This method initializes gameMenu
+	 * 
+	 * @return javax.swing.JMenu
+	 */
+	private JMenu getGameMenu() {
+		if (gameMenu == null) {
+			gameMenu = new JMenu();
+			gameMenu.setText(resourceBundle.getString(GAME_STR));
+			gameMenu.add(getNewGameMenuItem());
+			gameMenu.add(getSaveGameMenuItem());
+			gameMenu.add(getExitMenuItem());
+		}
+		return gameMenu;
+	}
+
+	/**
+	 * This method initializes newGameMenuItem
+	 * 
+	 * @return javax.swing.JMenuItem
+	 */
+	private JMenuItem getNewGameMenuItem() {
+		if (newGameMenuItem == null) {
+			newGameMenuItem = new JMenuItem();
+			newGameMenuItem.setText(resourceBundle.getString(NEW_GAME_STR));
+		}
+		return newGameMenuItem;
+	}
+
+	/**
+	 * This method initializes saveGameMenuItem	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getSaveGameMenuItem() {
+		if (saveGameMenuItem == null) {
+			saveGameMenuItem = new JMenuItem();
+			saveGameMenuItem.setText(resourceBundle.getString(SAVE_GAME_STR));
+		}
+		return saveGameMenuItem;
+	}
+
+	/**
+	 * This method initializes exitMenuItem	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getExitMenuItem() {
+		if (exitMenuItem == null) {
+			exitMenuItem = new JMenuItem();
+			exitMenuItem.setText(resourceBundle.getString(EXIT_STR));
+		}
+		return exitMenuItem;
+	}
+
+} // @jve:decl-index=0:visual-constraint="10,10"
