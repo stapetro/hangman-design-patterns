@@ -5,7 +5,7 @@ package hangman.constants;
  * 
  * 
  */
-public class HangmanConstants {
+public class HangmanConstants implements IConfigurationItemProperty {
 
 	/**
 	 * Stores masking symbol which is used in visualizing masked word.
@@ -25,11 +25,14 @@ public class HangmanConstants {
 	public static final String CONFIG_ATTR_NAME_LANGUAGE = "lang";
 	public static final String CONFIG_ATTR_NAME_SETTINGS = "settings";
 	public static final String CONFIG_ATTR_NAME_LEVELS = "levels";
+	public static final String CONFIG_ATTR_NAME_CATEGORIES = "categories";
 	public static final String CONFIG_ATTR_NAME_WORDS = "words";
 	
 	public static final String SETTINGS_LANGUAGE = "lang";
 	public static final String SETTINGS_LEVEL = "level";
 	public static final String SETTINGS_SCORE_BOARD_SIZE = "scoreboard_size";
+	
+	public static final String LEVEL_NODE_NAME = "level";
 	
 	public static final int DEFAULT_SCORE_BOARD_SIZE = 5;
 

@@ -1,6 +1,6 @@
 package hangman.constants;
 
-public enum LevelItemProperty {
+public enum LevelItemProperty implements IConfigurationItemProperty {
 
 	ID("id"), DESCRIPTION("desc"), NAME("name"), WORD_LENGTH("word_length"), TOTAL_MISTAKES(
 			"total_mistakes");

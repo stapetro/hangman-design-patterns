@@ -19,7 +19,7 @@ public interface IPersistenceFacade {
 
 	public void removeCategory(int categoryId);
 
-	public List<LanguageItem> getLanguages();
+	public List<ConfigurationItem> getLanguages();
 	
 	public LanguageItem getCurrentLanguage();	
 
@@ -27,7 +27,7 @@ public interface IPersistenceFacade {
 
 	public void removeLanguage(int languageId);
 	
-	public List<LevelItem> getLevels();
+	public List<ConfigurationItem> getLevels();
 	
 	public LevelItem getCurrentLevel();
 	

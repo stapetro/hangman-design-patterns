@@ -1,9 +1,6 @@
 package hangman.logic.config;
 
-import java.util.List;
-
 import hangman.constants.HangmanConstants;
-import hangman.domain.config.ConfigurationItem;
 import hangman.logic.xml.XmlManager;
 
 import org.w3c.dom.Node;

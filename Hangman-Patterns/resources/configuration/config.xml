@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<attr name="lang" value="resources/configuration/languages_config.xml" />
-	<attr name="categories" value="categories_config.xml" />
+	<attr name="categories" value="resources/configuration/categories_config.xml" />
 	<attr name="levels" value="resources/configuration/levels.xml" />	
-	<attr name="words" value="words.xml" />	
-	<attr name="scoreboard" value="scoreboard.xml" />	
-	<attr name="states" value="game_state.xml" />	
+	<attr name="words" value="resources/configuration/words.xml" />	
+	<attr name="scoreboard" value="resources/configuration/scoreboard.xml" />	
+	<attr name="states" value="resources/configuration/game_state.xml" />	
 	<attr name="settings" value="resources/configuration/settings.xml" />	
 </config>
