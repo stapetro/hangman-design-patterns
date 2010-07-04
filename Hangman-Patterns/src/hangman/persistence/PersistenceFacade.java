@@ -1,6 +1,7 @@
 package hangman.persistence;
 
 import hangman.constants.HangmanConstants;
+import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
@@ -94,6 +95,12 @@ public class PersistenceFacade implements IPersistenceFacade {
 	@Override
 	public List<LevelItem> getLevels() {
 		return this.levelConfigParser.getLevels();
+	}
+
+	@Override
+	public List<WordItem> getWordsByLanguage(int langaugeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

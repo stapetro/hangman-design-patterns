@@ -25,6 +25,7 @@ public class HangmanConstants {
 	public static final String CONFIG_ATTR_NAME_LANGUAGE = "lang";
 	public static final String CONFIG_ATTR_NAME_SETTINGS = "settings";
 	public static final String CONFIG_ATTR_NAME_LEVELS = "levels";
+	public static final String CONFIG_ATTR_NAME_WORDS = "words";
 	
 	public static final String SETTINGS_LANGUAGE = "lang";
 	public static final String SETTINGS_LEVEL = "level";
