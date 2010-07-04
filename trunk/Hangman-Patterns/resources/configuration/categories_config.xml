@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <categories>
-	<category id="1" desc="movies" />
-	<category id="2" desc="games" />
+	<category id="1" desc="movies" >
+		<!-- Property key in properties file -->
+		<name>movies</name>	
+	</category>
+	<category id="2" desc="games" >
+		<name>games</name>	
+	</category>
 </categories>
