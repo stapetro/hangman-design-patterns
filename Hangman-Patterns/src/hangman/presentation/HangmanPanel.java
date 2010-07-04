@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 public class HangmanPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * This is the default constructor
 	 */
