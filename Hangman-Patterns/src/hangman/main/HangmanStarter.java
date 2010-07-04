@@ -19,12 +19,13 @@ public class HangmanStarter {
 			System.out.println(langs.toString());
 		}
 		System.out.println("Current lang:\n" + facade.getCurrentLanguage());
-		System.out.println("Current score board size:\n"
+		System.out.println("Current score board size: "
 				+ facade.getCurrentScoreBoardSize());
 		List<LevelItem> levels = facade.getLevels();
 		if (levels != null) {
 			System.out.println(levels.toString());
 		}
+		System.out.println(facade.getCurrentLevel());
 	}
 
 }
