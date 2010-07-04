@@ -4,6 +4,7 @@ import hangman.constants.HangmanConstants;
 import hangman.constants.LanguageItemProperty;
 import hangman.domain.config.LanguageItem;
 import hangman.logic.xml.XmlManager;
+import hangman.utils.ConfigurationUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +32,8 @@ public class LanguageConfigurationParser {
 			if (languageNodes.size() > 0) {
 				List<LanguageItem> languageItems = new ArrayList<LanguageItem>();
 				for (Node langNode : languageNodes) {
-					HashMap<String, String> langProperties = getLanguageItemProperties(langNode);
+					HashMap<String, String> langProperties = ConfigurationUtility
+							.getProperties(langNode);
 					languageItems.add(new LanguageItem(langProperties));
 				}
 				return languageItems;
@@ -45,27 +47,29 @@ public class LanguageConfigurationParser {
 			Node languageNode = this.langXmlManager.getNodeByAttribute(
 					LanguageItemProperty.ID.toString(), String.valueOf(id));
 			if (languageNode != null) {
-				HashMap<String, String> langProperties = getLanguageItemProperties(languageNode);
+				HashMap<String, String> langProperties = ConfigurationUtility
+						.getProperties(languageNode);
 				return new LanguageItem(langProperties);
 			}
 		}
 		return null;
 	}
 
-	private HashMap<String, String> getLanguageItemProperties(Node langNode) {
-		NamedNodeMap langAttributes = langNode.getAttributes();
-		HashMap<String, String> langProperties = new HashMap<String, String>();
-		Node currentAttr = null;
-		String attrName = null;
-		String attrValue = null;
-		int size = langAttributes.getLength();
-		for (int index = 0; index < size; index++) {
-			currentAttr = langAttributes.item(index);
-			attrName = currentAttr.getNodeName();
-			attrValue = currentAttr.getNodeValue();
-			langProperties.put(attrName, attrValue);
-		}
-		return langProperties;
-	}
+	// private HashMap<String, String> getLanguageItemProperties(Node langNode)
+	// {
+	// NamedNodeMap langAttributes = langNode.getAttributes();
+	// HashMap<String, String> langProperties = new HashMap<String, String>();
+	// Node currentAttr = null;
+	// String attrName = null;
+	// String attrValue = null;
+	// int size = langAttributes.getLength();
+	// for (int index = 0; index < size; index++) {
+	// currentAttr = langAttributes.item(index);
+	// attrName = currentAttr.getNodeName();
+	// attrValue = currentAttr.getNodeValue();
+	// langProperties.put(attrName, attrValue);
+	// }
+	// return langProperties;
+	// }
 
 }

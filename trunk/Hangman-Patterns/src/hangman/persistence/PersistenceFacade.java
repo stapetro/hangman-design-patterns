@@ -76,7 +76,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 	public LevelItem getCurrentLevel() {
 		Integer levelId = this.settingsParser.getCurrentLevelId();
 		if (levelId != null) {
-
+			return this.levelConfigParser.getLevelById(levelId);
 		}
 		return null;
 	}

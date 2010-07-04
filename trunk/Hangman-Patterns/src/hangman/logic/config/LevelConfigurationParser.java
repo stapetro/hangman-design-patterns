@@ -1,14 +1,19 @@
 package hangman.logic.config;
 
 import hangman.constants.HangmanConstants;
+import hangman.constants.LanguageItemProperty;
+import hangman.constants.LevelItemProperty;
+import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
 import hangman.logic.xml.XmlManager;
+import hangman.utils.ConfigurationUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -32,7 +37,8 @@ public class LevelConfigurationParser {
 				List<LevelItem> levelItems = new ArrayList<LevelItem>();
 				HashMap<String, String> levelProperties = null;
 				for (int index = 0; index < size; index++) {
-					levelProperties = getLevelsProperties(levels.item(index));
+					levelProperties = ConfigurationUtility.getProperties(levels
+							.item(index));
 					levelItems.add(new LevelItem(levelProperties));
 				}
 				return levelItems;
@@ -41,19 +47,17 @@ public class LevelConfigurationParser {
 		return null;
 	}
 
-	private HashMap<String, String> getLevelsProperties(Node levelNode) {
-		NodeList levelChildren = levelNode.getChildNodes();
-		Node currentChild = null;
-		int size = levelChildren.getLength();
-		HashMap<String, String> levelProperties = new HashMap<String, String>();
-		for (int index = 0; index < size; index++) {
-			currentChild = levelChildren.item(index);
-			if (currentChild.getNodeType() == Element.ELEMENT_NODE) {
-				levelProperties.put(currentChild.getNodeName(), currentChild
-						.getTextContent());
+	public LevelItem getLevelById(int levelId) {
+		if (this.levelXmlManager != null) {
+			Node levelNode = this.levelXmlManager.getNodeByAttribute(
+					LevelItemProperty.ID.toString(), String.valueOf(levelId));
+			if (levelNode != null) {
+				HashMap<String, String> langProperties = ConfigurationUtility
+						.getProperties(levelNode);
+				return new LevelItem(langProperties);
 			}
 		}
-		return levelProperties;
+		return null;
 	}
 
 }
