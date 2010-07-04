@@ -1,7 +1,8 @@
 package hangman.persistence;
 
 import hangman.domain.config.ConfigurationItem;
-import hangman.domain.config.LanguageConfigurationItem;
+import hangman.domain.config.LanguageItem;
+import hangman.domain.config.LevelItem;
 
 import java.util.List;
 
@@ -17,13 +18,19 @@ public interface IPersistenceFacade {
 
 	public void removeCategory(int categoryId);
 
-	public List<LanguageConfigurationItem> getLanguages();
+	public List<LanguageItem> getLanguages();
+	
+	public LanguageItem getCurrentLanguage();	
 
-	public void addLanguage(LanguageConfigurationItem languageItem);
+	public void addLanguage(LanguageItem languageItem);
 
 	public void removeLanguage(int languageId);
-
-	public LanguageConfigurationItem getCurrentLanguage();
+	
+	public List<LevelItem> getLevels();
+	
+	public LevelItem getCurrentLevel();
+	
+	public int getCurrentScoreBoardSize();
 
 	// getCurrentLevel()
 

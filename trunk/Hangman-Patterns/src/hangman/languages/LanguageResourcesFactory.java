@@ -1,6 +1,6 @@
 package hangman.languages;
 
-import hangman.domain.config.LanguageConfigurationItem;
+import hangman.domain.config.LanguageItem;
 import hangman.persistence.IPersistenceFacade;
 import hangman.persistence.PersistenceFacadeSingleton;
 
@@ -40,7 +40,7 @@ public class LanguageResourcesFactory {
 	private Locale getLocale() {
 		IPersistenceFacade persistenceFacade = PersistenceFacadeSingleton
 				.getInstance();
-		LanguageConfigurationItem languageConfiguration = persistenceFacade
+		LanguageItem languageConfiguration = persistenceFacade
 				.getCurrentLanguage();
 
 		String languageCode = languageConfiguration.getLanguageCode();
