@@ -16,7 +16,7 @@ public class LanguageResourcesFactory {
 	/**
 	 * Resource bundle base name
 	 */
-	private static final String RESOURCE_BUNDLE_FILE = "i18n.Hangman";
+	private static final String RESOURCE_BUNDLE_FILE = "hangman.i18n.Hangman";
 
 	/**
 	 * Provide a resource bundle object for the specified language settings in
