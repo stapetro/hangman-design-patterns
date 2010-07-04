@@ -42,13 +42,6 @@ public class ConfigurationParser {
 				return valueAttr.getNodeValue();
 			}
 		}
-		return null;
+		return "";
 	}
-
-	// TODO Composition pattern - configuration parser contains other
-	// configuration parsers.
-	public List<ConfigurationItem> getConfigurationItems(String nameAttribute) {
-		return null;
-	}
-
 }

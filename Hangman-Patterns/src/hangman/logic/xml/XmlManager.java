@@ -1,6 +1,8 @@
 package hangman.logic.xml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,7 +18,6 @@ import org.xml.sax.SAXException;
 /**
  * Builder factory Manages XML document tree.
  * 
- * @author Stanislav Petrov
  * 
  */
 public class XmlManager {
@@ -66,14 +67,28 @@ public class XmlManager {
 		parseXmlFile(filePath);
 	}
 
+	public List<Node> getNodesByAttribute(String attributeName) {
+		List<Node> languageNodes = new ArrayList<Node>();
+		findNodesByAttribute(this.root, attributeName, languageNodes);
+		return languageNodes;
+	}
+
 	/**
 	 * Gets XML node by specifying its attribute name.
 	 * 
 	 * @param attributeName
+	 * @param attributeValue
+	 *            If it's null, gets first XML node with the specified attribute
+	 *            name.
 	 * @return
 	 */
 	public Node getNodeByAttribute(String attributeName, String attributeValue) {
 		return findNodeByAttribute(this.root, attributeName, attributeValue);
+	}
+	
+	public NodeList getNodesByName(String nodeName) {
+		NodeList foundNodes = this.xmlDocument.getElementsByTagName(nodeName);
+		return foundNodes;
 	}
 
 	/**
@@ -140,6 +155,27 @@ public class XmlManager {
 			}
 		}
 		return null;
+	}
+
+	private void findNodesByAttribute(Node root, String attrName,
+			List<Node> foundNodes) {
+		if (root.hasAttributes() == true) {
+			Node attribute = getAttribute(root, attrName, null);
+			if (attribute != null) {
+				foundNodes.add(root);
+			}
+		}
+		if (root.hasChildNodes() == true) {
+			NodeList children = root.getChildNodes();
+			int size = children.getLength();
+			Node currentChild = null;
+			for (int index = 0; index < size; index++) {
+				currentChild = children.item(index);
+				if (currentChild.getNodeType() == Element.ELEMENT_NODE) {
+					findNodesByAttribute(currentChild, attrName, foundNodes);
+				}
+			}
+		}
 	}
 
 	/**

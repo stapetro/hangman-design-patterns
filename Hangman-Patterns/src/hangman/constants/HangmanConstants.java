@@ -3,7 +3,6 @@ package hangman.constants;
 /**
  * Stores all general and non-context specific constants.
  * 
- * @author Stanislav Petrov
  * 
  */
 public class HangmanConstants {
@@ -23,5 +22,14 @@ public class HangmanConstants {
 	public static final String CONFIG_FILE_PATH = "resources/configuration/config.xml";
 	public static final String CONFIG_ATTR_NAME = "name";
 	public static final String CONFIG_ATTR_VALUE = "value";
+	public static final String CONFIG_ATTR_NAME_LANGUAGE = "lang";
+	public static final String CONFIG_ATTR_NAME_SETTINGS = "settings";
+	public static final String CONFIG_ATTR_NAME_LEVELS = "levels";
+	
+	public static final String SETTINGS_LANGUAGE = "lang";
+	public static final String SETTINGS_LEVEL = "level";
+	public static final String SETTINGS_SCORE_BOARD_SIZE = "scoreboard_size";
+	
+	public static final int DEFAULT_SCORE_BOARD_SIZE = 5;
 
 }
