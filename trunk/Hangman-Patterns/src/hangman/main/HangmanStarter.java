@@ -2,10 +2,12 @@ package hangman.main;
 
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
+import hangman.languages.LanguageResourcesFactory;
 import hangman.persistence.IPersistenceFacade;
 import hangman.persistence.PersistenceFacade;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class HangmanStarter {
 
@@ -26,6 +28,9 @@ public class HangmanStarter {
 			System.out.println(levels.toString());
 		}
 		System.out.println(facade.getCurrentLevel());
+		
+		ResourceBundle languageResource = LanguageResourcesFactory.getLanguageResource();
+		System.out.println(languageResource.getString("language"));
 	}
 
 }

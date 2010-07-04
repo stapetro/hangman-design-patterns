@@ -24,7 +24,7 @@ public class LanguageResourcesFactory {
 	 * 
 	 * @return ResourceBundle instance for internationalization
 	 */
-	public ResourceBundle getLanguageResource() {
+	public static ResourceBundle getLanguageResource() {
 		Locale locale = getLocale();
 		ResourceBundle languageResourceBundle = ResourceBundle.getBundle(
 				RESOURCE_BUNDLE_FILE, locale);
@@ -37,7 +37,7 @@ public class LanguageResourcesFactory {
 	 * 
 	 * @return the Locale set in configuration files
 	 */
-	private Locale getLocale() {
+	private static Locale getLocale() {
 		IPersistenceFacade persistenceFacade = PersistenceFacadeSingleton
 				.getInstance();
 		LanguageItem languageConfiguration = persistenceFacade
