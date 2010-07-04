@@ -1,4 +1,4 @@
-package hangman.logic.config.item;
+package hangman.persistence.config;
 
 import hangman.domain.config.ConfigurationItem;
 

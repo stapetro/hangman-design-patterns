@@ -25,9 +25,14 @@ public class Player implements Comparable<Player> {
 		this.cheatTheGame = false;
 	}
 
+	public Player(String name, int totalMistakes) {
+		this();
+		this.name = name;
+		this.totalMistakes = totalMistakes;
+	}
+
 	public Player(Player player) {
-		this.name = player.getName();
-		this.totalMistakes = player.getTotalMistakes();
+		this(player.getName(), player.getTotalMistakes());
 		this.cheatTheGame = player.isCheatTheGame();
 	}
 
@@ -42,7 +47,6 @@ public class Player implements Comparable<Player> {
 				}
 			}
 		}
-
 	}
 
 	public String getName() {
@@ -65,13 +69,40 @@ public class Player implements Comparable<Player> {
 		return this.totalMistakes;
 	}
 
+	public HashMap<String, String> getProperties() {
+		HashMap<String, String> playerProperties = new HashMap<String, String>();
+		if ((this.name != null && this.name.length() > 0)
+				&& this.totalMistakes != null) {
+			playerProperties.put(PlayerProperty.NAME.toString(), this.name);
+			playerProperties.put(PlayerProperty.TOTAL_MISTAKES.toString(),
+					this.totalMistakes.toString());
+		}
+		return playerProperties;
+	}
+
 	public void incrementTotalMistakes() {
 		this.totalMistakes++;
 	}
 
 	@Override
 	public int compareTo(Player otherPlayer) {
+		Integer otherPlayerTotalMistakes = otherPlayer.getTotalMistakes();
+		if (this.totalMistakes == null && otherPlayerTotalMistakes != null) {
+			return -1;
+		} else if (this.totalMistakes != null
+				&& otherPlayerTotalMistakes == null) {
+			return 1;
+		} else if (this.totalMistakes == null
+				&& otherPlayerTotalMistakes == null) {
+			return 0;
+		}
 		return this.totalMistakes.compareTo(otherPlayer.getTotalMistakes());
+	}
+
+	public String toString() {
+		return String.format(
+				"Player name: %s, Total mistakes: %d, Cheated: %b", this.name,
+				this.totalMistakes, this.cheatTheGame);
 	}
 
 	private void setProperty(PlayerProperty playerPropName, String propValue) {

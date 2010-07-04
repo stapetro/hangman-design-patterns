@@ -1,10 +1,9 @@
-package hangman.logic.config.item;
+package hangman.persistence.config;
 
 import hangman.constants.CategoryItemProperty;
 import hangman.constants.HangmanConstants;
 import hangman.domain.config.CategoryItem;
 import hangman.domain.config.ConfigurationItem;
-import hangman.logic.config.ConfigurationParser;
 import hangman.logic.xml.XmlManager;
 import hangman.utils.ConfigurationUtility;
 

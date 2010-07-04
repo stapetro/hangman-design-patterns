@@ -1,5 +1,7 @@
 package hangman.persistence;
 
+import hangman.domain.Player;
+import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
@@ -34,5 +36,13 @@ public interface IPersistenceFacade {
 	public int getCurrentScoreBoardSize();
 	
 	public List<WordItem> getWordsByLanguage(int langaugeId);
+	
+	public ScoreBoard getScoreBoardByLevel(int levelId);
+	
+	public ScoreBoard getCurrentScoreBoard();
+	
+	public void addPlayer(Player player);
+	
+	public void addPlayer(Player player, int levelId);
 
 }

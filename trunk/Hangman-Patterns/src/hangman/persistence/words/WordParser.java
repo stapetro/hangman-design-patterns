@@ -1,4 +1,4 @@
-package hangman.logic.config;
+package hangman.persistence.words;
 
 import hangman.constants.HangmanConstants;
 import hangman.constants.WordItemProperty;
@@ -6,8 +6,9 @@ import hangman.domain.WordItem;
 import hangman.domain.config.CategoryItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
-import hangman.logic.config.item.IConfigurationItemParser;
 import hangman.logic.xml.XmlManager;
+import hangman.persistence.config.ConfigurationParser;
+import hangman.persistence.config.IConfigurationItemParser;
 import hangman.utils.ConfigurationUtility;
 
 import java.util.ArrayList;

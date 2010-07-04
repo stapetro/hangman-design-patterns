@@ -1,10 +1,9 @@
-package hangman.logic.config.item;
+package hangman.persistence.config;
 
 import hangman.constants.CategoryItemProperty;
 import hangman.constants.IConfigurationItemProperty;
 import hangman.constants.LanguageItemProperty;
 import hangman.constants.LevelItemProperty;
-import hangman.logic.config.ConfigurationParser;
 
 /**
  * Factory for creating configuration item parsers.
