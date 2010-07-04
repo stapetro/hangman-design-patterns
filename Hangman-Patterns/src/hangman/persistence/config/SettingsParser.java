@@ -1,4 +1,4 @@
-package hangman.logic.config;
+package hangman.persistence.config;
 
 import hangman.constants.HangmanConstants;
 import hangman.logic.xml.XmlManager;

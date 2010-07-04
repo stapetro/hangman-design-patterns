@@ -34,8 +34,12 @@ public class HangmanConstants implements IConfigurationItemProperty {
 	public static final String SETTINGS_SCORE_BOARD_SIZE = "scoreboard_size";
 	
 	public static final String LEVEL_NODE_NAME = "level";
+	public static final String PLAYER_NODE_NAME = "player";
+	public static final String SCORE_BOARD_NODE_NAME = "scoreboard";
 	
 	public static final int DEFAULT_SCORE_BOARD_SIZE = 5;
+	public static final int DEFAULT_LEVEL_ID = 1;
+	
 	/**
 	 * Used in scoreboard.xml
 	 */

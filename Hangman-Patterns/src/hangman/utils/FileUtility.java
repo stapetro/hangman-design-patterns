@@ -11,6 +11,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+
 public class FileUtility {
 
 	/**
@@ -92,6 +102,27 @@ public class FileUtility {
 			close(outputStream);
 		}
 		return true;
+	}
+
+	public static boolean writeXmlFile(Document document, String filePath) {
+		DOMSource xmlSource = new DOMSource(document);
+		File file = new File(filePath);
+		StreamResult outputTarget = new StreamResult(file);
+		try {
+			Transformer xmlTransformer = TransformerFactory.newInstance()
+					.newTransformer();
+			try {
+				xmlTransformer.transform(xmlSource, outputTarget);
+				return true;
+			} catch (TransformerException e) {
+				e.printStackTrace();
+			}
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerFactoryConfigurationError e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**

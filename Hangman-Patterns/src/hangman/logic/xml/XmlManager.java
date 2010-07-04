@@ -1,18 +1,25 @@
 package hangman.logic.xml;
 
+import hangman.utils.FileUtility;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
@@ -53,6 +60,10 @@ public class XmlManager {
 
 	public Document getXmlDocument() {
 		return xmlDocument;
+	}
+
+	public Node getRoot() {
+		return this.root;
 	}
 
 	private XmlManager(String filePath) throws ParserConfigurationException,
@@ -115,6 +126,71 @@ public class XmlManager {
 	 */
 	public Node getAttributeByNode(Node xmlNode, String attributeName) {
 		return getAttribute(xmlNode, attributeName, null);
+	}
+
+	public Node addNode(String newNodeName, HashMap<String, String> attributes,
+			HashMap<String, String> children, Node root) {
+		if (root == null) {
+			return null;
+		}
+		Node newNode = this.xmlDocument.createElement(newNodeName);
+		root.appendChild(newNode);
+		if (attributes != null && attributes.size() > 0) {
+			addAttributes(attributes, newNode);
+		}
+		if (children != null && children.size() > 0) {
+			addChildren(children, newNode);
+		}
+		return newNode;
+	}
+
+	/**
+	 * Adds node to root.
+	 * 
+	 * @param newNodeName
+	 * @param attributes
+	 * @param children
+	 */
+	public Node addNode(String newNodeName, HashMap<String, String> attributes,
+			HashMap<String, String> children) {
+		return addNode(newNodeName, attributes, children, this.root);
+	}
+
+	public boolean writeDocumentToXmlFile(String filePath) {
+		return FileUtility.writeXmlFile(this.xmlDocument, filePath);
+	}
+
+	private void addChildren(HashMap<String, String> children, Node newNode) {
+		Set<String> childrenNames = children.keySet();
+		Iterator<String> iterator = childrenNames.iterator();
+		String nodeName = null;
+		String nodeValue = null;
+		Node newChildNode = null;
+		Text text = null;
+		while (iterator.hasNext()) {
+			nodeName = iterator.next();
+			nodeValue = children.get(nodeName);
+			newChildNode = this.xmlDocument.createElement(nodeName);
+			text = this.xmlDocument.createTextNode(nodeValue);
+			newChildNode.appendChild(text);
+			newNode.appendChild(newChildNode);
+		}
+	}
+
+	private void addAttributes(HashMap<String, String> attributes, Node newNode) {
+		Set<String> attributeNames = attributes.keySet();
+		Iterator<String> iterator = attributeNames.iterator();
+		String attrName = null;
+		String attrValue = null;
+		Attr newAttribute = null;
+		NamedNodeMap newNodeAttributes = newNode.getAttributes();
+		while (iterator.hasNext()) {
+			attrName = iterator.next();
+			attrValue = attributes.get(attrName);
+			newAttribute = this.xmlDocument.createAttribute(attrName);
+			newAttribute.setValue(attrValue);
+			newNodeAttributes.setNamedItem(newAttribute);
+		}
 	}
 
 	private void parseXmlFile(String filePath) throws SAXException, IOException {
