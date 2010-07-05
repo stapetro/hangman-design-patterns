@@ -180,8 +180,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public WordItem getWord(int wordId) {
-		this.wordParser.getWord(wordId);
-		return null;
+		return this.wordParser.getWord(wordId);
 	}
 
 }

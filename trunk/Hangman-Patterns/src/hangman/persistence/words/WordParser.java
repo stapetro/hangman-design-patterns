@@ -41,41 +41,24 @@ public class WordParser {
 
 	public WordItem getWord(int wordId) {
 		if (this.wordXmlManager != null) {
-			this.wordXmlManager.getNodeByAttribute(WordItemProperty.ID
-					.toString(), String.valueOf(wordId));
+			Node wordNode = this.wordXmlManager.getNodeByAttribute(
+					WordItemProperty.ID.toString(), String.valueOf(wordId));
+			if (wordNode != null) {
+				return createWordItem(wordNode);
+			}
 		}
 		return null;
 	}
-
-	// TODO To be improved and separated this method after its full
-	// implementation.
+	
 	public List<WordItem> getWordsByLanguage(int languageId) {
 		if (this.wordXmlManager != null) {
 			String langIdPropertyName = WordItemProperty.LANGUAGE_ID.toString();
 			List<Node> words = this.wordXmlManager.getNodesByAttribute(
 					langIdPropertyName, String.valueOf(languageId));
 			if (words.size() > 0) {
-				String categoryIdPropertyName = WordItemProperty.CATEGORY_ID
-						.toString();
-				HashMap<String, String> wordProperties = null;
 				List<WordItem> wordItems = new ArrayList<WordItem>();
 				for (Node word : words) {
-					wordProperties = ConfigurationUtility.getProperties(word);
-					String langId = wordProperties.get(langIdPropertyName);
-					String categoryId = wordProperties
-							.get(categoryIdPropertyName);
-					CategoryItem categoryItem = null;
-					if (categoryId != null) {
-						categoryItem = createCategoryItem(categoryId);
-						wordProperties.remove(categoryIdPropertyName);
-					}
-					LanguageItem languageItem = null;
-					if (langId != null) {
-						languageItem = createLanguageItem(langId);
-						wordProperties.remove(langIdPropertyName);
-					}
-					wordItems.add(new WordItem(wordProperties, languageItem,
-							categoryItem));
+					wordItems.add(createWordItem(word));
 				}
 				return wordItems;
 			}
@@ -86,24 +69,23 @@ public class WordParser {
 	private WordItem createWordItem(Node wordNode) {
 		HashMap<String, String> wordProperties = ConfigurationUtility
 				.getProperties(wordNode);
-		String langIdPropertyName = WordItemProperty.LANGUAGE_ID
-		.toString();
-		String categoryIdPropertyName = WordItemProperty.CATEGORY_ID
-		.toString();
+
+		String langIdPropertyName = WordItemProperty.LANGUAGE_ID.toString();
 		String langId = wordProperties.get(langIdPropertyName);
+		LanguageItem languageItem = null;
+		if (langId != null) {
+			languageItem = createLanguageItem(langId);
+			wordProperties.remove(langIdPropertyName);
+		}
+
+		String categoryIdPropertyName = WordItemProperty.CATEGORY_ID.toString();
 		String categoryId = wordProperties.get(categoryIdPropertyName);
 		CategoryItem categoryItem = null;
 		if (categoryId != null) {
 			categoryItem = createCategoryItem(categoryId);
 			wordProperties.remove(categoryIdPropertyName);
 		}
-		LanguageItem languageItem = null;
-		if (langId != null) {
-			languageItem = createLanguageItem(langId);
-			wordProperties.remove(langIdPropertyName);
-		}
-		return new WordItem(wordProperties, languageItem,
-				categoryItem);		
+		return new WordItem(wordProperties, languageItem, categoryItem);
 	}
 
 	private CategoryItem createCategoryItem(String categoryId) {
