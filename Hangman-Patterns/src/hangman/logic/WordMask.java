@@ -7,7 +7,7 @@ import hangman.persistence.PersistenceFacadeSingleton;
 import java.util.Observable;
 
 /**
- * Represents mask of the original word.
+ * Represents mask of the original word. Memento
  * 
  * @author Stanislav Petrov
  * 
@@ -30,11 +30,7 @@ public class WordMask extends Observable {
 	private Character lastRevealedLetter;
 
 	public WordMask(WordItem wordItem) {
-		this.wordItem = wordItem;
-		this.usedLetters = new StringBuilder();
-		this.totalMistakes = 0;
-		initialize();
-		constructMaskedWord();
+		setWordItem(wordItem);
 	}
 
 	/**
@@ -47,7 +43,6 @@ public class WordMask extends Observable {
 			this.wordItem = wordItem;
 		}
 		initialize();
-		constructMaskedWord();
 	}
 
 	public WordItem getWordItem() {
@@ -103,15 +98,31 @@ public class WordMask extends Observable {
 			return false;
 		}
 	}
-	
+
 	public Memento saveToMemento() {
-		return new Memento(this.wordItem.getId(), totalMistakes, usedLetters.toString());
+		return new Memento(this.wordItem.getId(), totalMistakes, usedLetters
+				.toString());
 	}
-	
+
 	public void restoreFromMemento(Memento memento) {
-		memento.getSavedWordId();
-		this.totalMistakes = memento.getSavedTotalMistakes();
-		this.usedLetters = new StringBuilder(memento.getSavedUsedLetters());
+		this.wordItem = PersistenceFacadeSingleton.getInstance().getWord(
+				memento.getSavedWordId());
+		initialize();
+		String savedUsedLetters = memento.getSavedUsedLetters();
+		for (int index = 0; index < savedUsedLetters.length(); index++) {
+			processLetter(savedUsedLetters.charAt(index));
+		}
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public String toString() {
+		return String
+				.format(
+						"Masked word: %s, Mistakes: %d, Used letters: %s, Revealed letters: %d, Last revealed: %c",
+						this.maskedWord, this.totalMistakes, this.usedLetters,
+						this.numberOfrevealedLetters, this.lastRevealedLetter);
 	}
 
 	/**
@@ -145,7 +156,10 @@ public class WordMask extends Observable {
 	private void initialize() {
 		this.mask = new boolean[this.wordItem.getContent().length()];
 		this.numberOfrevealedLetters = 0;
+		this.totalMistakes = 0;
 		this.lastRevealedLetter = null;
+		this.usedLetters = new StringBuilder();
+		constructMaskedWord();
 	}
 
 	private void saveUsedLetter(char letter) {
@@ -168,8 +182,8 @@ public class WordMask extends Observable {
 				}
 			}
 			constructMaskedWord();
+			this.lastRevealedLetter = letter;
 		}
-		this.lastRevealedLetter = letter;
 		saveUsedLetter(letter);
 		if (this.numberOfrevealedLetters > 0) {
 			return true;
@@ -180,25 +194,19 @@ public class WordMask extends Observable {
 	}
 
 	public static class Memento {
-		
+
 		private final int wordId;
-		private final int totalMistakes;
 		private final String usedLetters;
 
 		private Memento(int wordId, int mistakes, String usedLetters) {
 			this.wordId = wordId;
-			this.totalMistakes = mistakes;
 			this.usedLetters = usedLetters;
 		}
-		
+
 		private int getSavedWordId() {
 			return this.wordId;
 		}
-		
-		private int getSavedTotalMistakes() {
-			return this.totalMistakes;
-		}
-		
+
 		private String getSavedUsedLetters() {
 			return this.usedLetters;
 		}
