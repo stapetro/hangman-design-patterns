@@ -4,6 +4,7 @@ import hangman.languages.LanguageResourcesFactory;
 import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,19 +12,21 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class WordPanel extends JPanel {
 
 	private static final String ALPHABET_STR = "alphabet";
+	private static final String CURRENT_WORD_MSG = "currentWordMessage";
 	private static final String COMMA = ",";
 
-	private ResourceBundle resourceBundle; // @jve:decl-index=0:
+	private ResourceBundle resourceBundle;
 
 	private static final long serialVersionUID = 1L;
+	private static final Font STANDARD_FONT = new Font("Serif", Font.PLAIN, 40);
 	private JPanel alphabetPanel = null;
 	private JLabel secretWordLabel = null;
+	private JLabel wordMessageLabel = null;
 
 	private WordMask wordMask;
 
@@ -44,12 +47,17 @@ public class WordPanel extends JPanel {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
 
 		secretWordLabel = new JLabel();
+		secretWordLabel.setFont(STANDARD_FONT);
 		this.wordMask = wordMaskObj;
 		refreshMaskedWord();
 		this.setSize(300, 200);
 		this.setLayout(new BorderLayout());
 		this.add(getAlphabetPanel(), BorderLayout.SOUTH);
 		this.add(secretWordLabel, BorderLayout.CENTER);
+		wordMessageLabel = new JLabel();
+		this.add(wordMessageLabel, BorderLayout.WEST);
+		wordMessageLabel.setText(resourceBundle.getString(CURRENT_WORD_MSG) + " : ");
+		wordMessageLabel.setFont(STANDARD_FONT);
 		populateAlphabetLetters(alphabetPanel);
 	}
 

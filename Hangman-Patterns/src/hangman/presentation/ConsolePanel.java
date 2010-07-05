@@ -24,7 +24,7 @@ public class ConsolePanel extends JPanel implements Observer {
 	private JScrollPane consoleScrollPane = null;
 	private JTextArea consoleTextArea = null;
 
-	private ResourceBundle resourceBundle; // @jve:decl-index=0:
+	private ResourceBundle resourceBundle;
 
 	/**
 	 * This is the default constructor
@@ -80,7 +80,6 @@ public class ConsolePanel extends JPanel implements Observer {
 	private JTextArea getConsoleTextArea() {
 		if (consoleTextArea == null) {
 			consoleTextArea = new JTextArea();
-			consoleTextArea.setText("kak si");
 		}
 		return consoleTextArea;
 	}
@@ -117,5 +116,4 @@ public class ConsolePanel extends JPanel implements Observer {
 		consoleTextArea.append(resourceBundle.getString(PROVERB_MSG) + "\n");
 		consoleTextArea.append(proverb + "\n");
 	}
-
 }
