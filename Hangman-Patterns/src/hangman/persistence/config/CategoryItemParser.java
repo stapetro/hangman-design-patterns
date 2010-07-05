@@ -1,7 +1,6 @@
 package hangman.persistence.config;
 
 import hangman.constants.CategoryItemProperty;
-import hangman.constants.HangmanConstants;
 import hangman.domain.config.CategoryItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.logic.xml.XmlManager;
@@ -11,13 +10,9 @@ import java.util.List;
 
 public class CategoryItemParser implements IConfigurationItemParser {
 
-	private ConfigurationParser configParser;
 	private XmlManager categoryXmlManager;
 
-	public CategoryItemParser(ConfigurationParser configParser) {
-		this.configParser = configParser;
-		String categoryXmlFilePath = this.configParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_CATEGORIES);
+	public CategoryItemParser(String categoryXmlFilePath) {
 		this.categoryXmlManager = XmlManager
 				.createXmlManager(categoryXmlFilePath);
 	}

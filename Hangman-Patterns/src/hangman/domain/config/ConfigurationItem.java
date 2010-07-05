@@ -1,6 +1,5 @@
 package hangman.domain.config;
 
-import hangman.constants.LanguageItemProperty;
 
 public class ConfigurationItem {
 

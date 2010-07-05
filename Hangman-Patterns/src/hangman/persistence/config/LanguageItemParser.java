@@ -1,6 +1,5 @@
 package hangman.persistence.config;
 
-import hangman.constants.HangmanConstants;
 import hangman.constants.LanguageItemProperty;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
@@ -11,13 +10,9 @@ import java.util.List;
 
 public class LanguageItemParser implements IConfigurationItemParser {
 
-	private ConfigurationParser configParser;
 	private XmlManager langXmlManager;
 
-	public LanguageItemParser(ConfigurationParser configParser) {
-		this.configParser = configParser;
-		String languageXmlFilePath = this.configParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_LANGUAGE);
+	public LanguageItemParser(String languageXmlFilePath) {
 		this.langXmlManager = XmlManager.createXmlManager(languageXmlFilePath);
 	}
 

@@ -39,22 +39,28 @@ public class WordParser {
 		this.wordXmlManager = XmlManager.createXmlManager(wordXmlFilePath);
 	}
 
+	public WordItem getWord(int wordId) {
+		if (this.wordXmlManager != null) {
+			this.wordXmlManager.getNodeByAttribute(WordItemProperty.ID
+					.toString(), String.valueOf(wordId));
+		}
+		return null;
+	}
+
 	// TODO To be improved and separated this method after its full
 	// implementation.
 	public List<WordItem> getWordsByLanguage(int languageId) {
-		if (this.wordXmlManager != null) {		
-			String langIdPropertyName = WordItemProperty.LANGUAGE_ID
-			.toString();
+		if (this.wordXmlManager != null) {
+			String langIdPropertyName = WordItemProperty.LANGUAGE_ID.toString();
 			List<Node> words = this.wordXmlManager.getNodesByAttribute(
-					langIdPropertyName, String
-							.valueOf(languageId));
-			if (words.size() > 0) {					
+					langIdPropertyName, String.valueOf(languageId));
+			if (words.size() > 0) {
 				String categoryIdPropertyName = WordItemProperty.CATEGORY_ID
 						.toString();
 				HashMap<String, String> wordProperties = null;
 				List<WordItem> wordItems = new ArrayList<WordItem>();
-				for (Node word : words) {					
-					wordProperties = ConfigurationUtility.getProperties(word);					
+				for (Node word : words) {
+					wordProperties = ConfigurationUtility.getProperties(word);
 					String langId = wordProperties.get(langIdPropertyName);
 					String categoryId = wordProperties
 							.get(categoryIdPropertyName);
@@ -76,34 +82,57 @@ public class WordParser {
 		}
 		return null;
 	}
-	
+
+	private WordItem createWordItem(Node wordNode) {
+		HashMap<String, String> wordProperties = ConfigurationUtility
+				.getProperties(wordNode);
+		String langIdPropertyName = WordItemProperty.LANGUAGE_ID
+		.toString();
+		String categoryIdPropertyName = WordItemProperty.CATEGORY_ID
+		.toString();
+		String langId = wordProperties.get(langIdPropertyName);
+		String categoryId = wordProperties.get(categoryIdPropertyName);
+		CategoryItem categoryItem = null;
+		if (categoryId != null) {
+			categoryItem = createCategoryItem(categoryId);
+			wordProperties.remove(categoryIdPropertyName);
+		}
+		LanguageItem languageItem = null;
+		if (langId != null) {
+			languageItem = createLanguageItem(langId);
+			wordProperties.remove(langIdPropertyName);
+		}
+		return new WordItem(wordProperties, languageItem,
+				categoryItem);		
+	}
+
 	private CategoryItem createCategoryItem(String categoryId) {
 		try {
-			ConfigurationItem configItem = this.categoryParser.getConfigurationItemById(Integer
-					.parseInt(categoryId));
-			if(configItem != null && configItem instanceof CategoryItem) {
-				return (CategoryItem)configItem;
+			ConfigurationItem configItem = this.categoryParser
+					.getConfigurationItemById(Integer.parseInt(categoryId));
+			if (configItem != null && configItem instanceof CategoryItem) {
+				return (CategoryItem) configItem;
 			}
 		} catch (NumberFormatException ex) {
 			System.out.println("Category with id '" + categoryId
-					+ "' cannot be parsed.");							
+					+ "' cannot be parsed.");
 			ex.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	private LanguageItem createLanguageItem(String langId) {
 		try {
 			ConfigurationItem configItem = this.languageConfigParser
 					.getConfigurationItemById(Integer.parseInt(langId));
-			if(configItem != null && configItem instanceof LanguageItem) {
-				return (LanguageItem)configItem;
+			if (configItem != null && configItem instanceof LanguageItem) {
+				return (LanguageItem) configItem;
 			}
 		} catch (NumberFormatException ex) {
 			System.out.println("Language with id '" + langId
 					+ "' cannot be parsed.");
 			ex.printStackTrace();
-		}		
+		}
 		return null;
 	}
 

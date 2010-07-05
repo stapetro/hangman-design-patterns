@@ -34,6 +34,7 @@ public class XmlManager {
 	private Document xmlDocument;
 	private ValidationHandler validationHandler;
 	private Element root;
+	private String xmlFilePath;
 
 	/**
 	 * Creates XML manager for specified XML file.
@@ -76,6 +77,7 @@ public class XmlManager {
 			throw e;
 		}
 		parseXmlFile(filePath);
+		this.xmlFilePath = filePath;
 	}
 
 	public List<Node> getNodesByAttribute(String attributeName) {
@@ -113,6 +115,14 @@ public class XmlManager {
 	public NodeList getNodesByName(String nodeName) {
 		NodeList foundNodes = this.xmlDocument.getElementsByTagName(nodeName);
 		return foundNodes;
+	}
+	
+	public Node getNodeByName(String nodeName) {
+		NodeList foundNodes = getNodesByName(nodeName);
+		if(foundNodes != null && foundNodes.getLength() > 0) {
+			return foundNodes.item(0);
+		}
+		return null;
 	}
 
 	/**
@@ -155,11 +165,24 @@ public class XmlManager {
 			HashMap<String, String> children) {
 		return addNode(newNodeName, attributes, children, this.root);
 	}
-
+	
+	/**
+	 * Removes child node from root
+	 * @param rootChildNode
+	 * @return Removed node
+	 */
+	public Node removeNode(Node rootChildNode) {
+		return this.root.removeChild(rootChildNode);
+	}
+	
 	public boolean writeDocumentToXmlFile(String filePath) {
 		return FileUtility.writeXmlFile(this.xmlDocument, filePath);
+	}	
+	
+	public boolean writeDocumentToXmlFile() {		
+		return FileUtility.writeXmlFile(this.xmlDocument, this.xmlFilePath);
 	}
-
+	
 	private void addChildren(HashMap<String, String> children, Node newNode) {
 		Set<String> childrenNames = children.keySet();
 		Iterator<String> iterator = childrenNames.iterator();
@@ -293,5 +316,4 @@ public class XmlManager {
 		}
 		return null;
 	}
-
 }
