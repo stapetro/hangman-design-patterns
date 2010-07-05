@@ -60,6 +60,7 @@ public class HangmanFrame extends JFrame {
 		super();
 		initialize();
 		initializeComponents();
+		initializeObservers();
 	}
 
 	/**
@@ -69,13 +70,13 @@ public class HangmanFrame extends JFrame {
 	 */
 	private void initialize() {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
-		wordMask = getWordMask();
 
 		this.setSize(652, 452);
 		this.setJMenuBar(getMenu());
 		this.setContentPane(getJContentPane());
 		this.setTitle(resourceBundle.getString(HANGMAN_STR));
 
+		wordMask = getWordMask();
 		wordsPanel = new WordPanel(wordMask);
 		jContentPane.add(wordsPanel, BorderLayout.SOUTH);
 	}
@@ -92,7 +93,10 @@ public class HangmanFrame extends JFrame {
 		// add the console panel
 		consolePanel = new ConsolePanel();
 		jContentPane.add(consolePanel, BorderLayout.EAST);
+	}
 
+	public void initializeObservers() {
+		wordMask.addObserver(consolePanel);
 	}
 
 	/**

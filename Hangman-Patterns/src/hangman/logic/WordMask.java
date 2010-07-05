@@ -3,13 +3,15 @@ package hangman.logic;
 import hangman.constants.HangmanConstants;
 import hangman.domain.WordItem;
 
+import java.util.Observable;
+
 /**
  * Represents mask of the original word.
  * 
  * @author Stanislav Petrov
  * 
  */
-public class WordMask {
+public class WordMask extends Observable {
 
 	private String originalWord;
 	private String maskedWord;
@@ -81,9 +83,14 @@ public class WordMask {
 			}
 			constructMaskedWord();
 			this.lastRevealedLetter = letter;
+			setChanged();
+			notifyObservers();
 			return true;
 		}
+		setChanged();
+		notifyObservers();
 		return false;
+
 	}
 
 	/**
