@@ -8,6 +8,7 @@ import hangman.domain.config.LanguageItem;
 
 public class WordItem {
 
+	private int id;
 	private LanguageItem language;
 	private ConfigurationItem category;
 	private String content;
@@ -19,6 +20,7 @@ public class WordItem {
 
 	public WordItem(String content, String proverb, LanguageItem lang,
 			ConfigurationItem category) {
+		this.id = -1;
 		this.content = content;
 		this.proverb = proverb;
 		this.language = lang;
@@ -44,6 +46,14 @@ public class WordItem {
 	public WordItem(HashMap<String, String> wordProperties,
 			LanguageItem languageItem) {
 		this(wordProperties, languageItem, null);
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public LanguageItem getLanguage() {
@@ -80,15 +90,23 @@ public class WordItem {
 
 	@Override
 	public String toString() {
-		return String.format(
-				"Content: %s, Proverb: %s%nLanguage: %s%nCategory: %s%n",
-				this.content, this.proverb,
-				((this.language != null) ? this.language : ""),
-				((this.category != null) ? this.category : ""));
+		return String
+				.format(
+						"Word id: %d, Content: %s, Proverb: %s%nLanguage: %s%nCategory: %s%n",
+						this.id, this.content, this.proverb,
+						((this.language != null) ? this.language : ""),
+						((this.category != null) ? this.category : ""));
 	}
 
 	private void setProperty(WordItemProperty wordPropertyName, String propValue) {
 		switch (wordPropertyName) {
+		case ID:
+			try {
+				this.id = Integer.parseInt(propValue);
+			} catch (NumberFormatException ex) {
+				ex.printStackTrace();
+			}
+			break;
 		case CONTENT:
 			this.content = propValue;
 			break;

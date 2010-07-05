@@ -4,7 +4,6 @@ import hangman.constants.CategoryItemProperty;
 import hangman.constants.HangmanConstants;
 import hangman.constants.LanguageItemProperty;
 import hangman.constants.LevelItemProperty;
-import hangman.domain.Player;
 import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
@@ -13,8 +12,8 @@ import hangman.domain.config.LevelItem;
 import hangman.persistence.config.ConfigurationItemParrserFactory;
 import hangman.persistence.config.ConfigurationParser;
 import hangman.persistence.config.IConfigurationItemParser;
-import hangman.persistence.config.SettingsParser;
-import hangman.persistence.scoreboard.ScoreBoardManager;
+import hangman.persistence.config.SettingsPersister;
+import hangman.persistence.scoreboard.ScoreBoardPersister;
 import hangman.persistence.words.WordParser;
 
 import java.util.List;
@@ -26,9 +25,9 @@ public class PersistenceFacade implements IPersistenceFacade {
 	private IConfigurationItemParser langConfigParser;
 	private IConfigurationItemParser levelConfigParser;
 	private IConfigurationItemParser categoryParser;
-	private SettingsParser settingsParser;
+	private SettingsPersister settingsPersister;
+	private ScoreBoardPersister scoreBoardPersister;
 	private WordParser wordParser;
-	private ScoreBoardManager scoreBoardMgr;
 
 	public PersistenceFacade() {
 		this.configurationParser = new ConfigurationParser();
@@ -41,11 +40,11 @@ public class PersistenceFacade implements IPersistenceFacade {
 		this.categoryParser = ConfigurationItemParrserFactory
 				.newConfigurationItemParser(this.configurationParser,
 						CategoryItemProperty.ID);
-		this.settingsParser = new SettingsParser(this.configurationParser);
+		this.settingsPersister = new SettingsPersister(this.configurationParser);
 		this.wordParser = new WordParser(this.configurationParser,
 				this.langConfigParser, this.categoryParser);
-		this.scoreBoardMgr = new ScoreBoardManager(this.configurationParser,
-				this.settingsParser);
+		this.scoreBoardPersister = new ScoreBoardPersister(this.configurationParser,
+				this.settingsPersister);
 	}
 
 	@Override
@@ -67,7 +66,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public LanguageItem getCurrentLanguage() {
-		Integer langId = this.settingsParser.getCurrentLanguageId();
+		Integer langId = this.settingsPersister.getCurrentLanguageId();
 		if (langId != null) {
 			ConfigurationItem configItem = this.langConfigParser
 					.getConfigurationItemById(langId);
@@ -97,7 +96,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public LevelItem getCurrentLevel() {
-		Integer levelId = this.settingsParser.getCurrentLevelId();
+		Integer levelId = this.settingsPersister.getCurrentLevelId();
 		if (levelId != null) {
 			ConfigurationItem configItem = this.levelConfigParser
 					.getConfigurationItemById(levelId);
@@ -110,7 +109,8 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public int getCurrentScoreBoardSize() {
-		Integer scoreBoardSize = this.settingsParser.getCurrentScoreBoardSize();
+		Integer scoreBoardSize = this.settingsPersister
+				.getCurrentScoreBoardSize();
 		if (scoreBoardSize != null) {
 			return scoreBoardSize;
 		} else {
@@ -130,40 +130,57 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 	@Override
 	public ScoreBoard getScoreBoardByLevel(int levelId) {
-		return this.scoreBoardMgr.getScoreBoardByLevelId(levelId);
+		return this.scoreBoardPersister.getScoreBoardByLevelId(levelId);
 	}
 
 	@Override
 	public ScoreBoard getCurrentScoreBoard() {
-		return this.scoreBoardMgr.getCurrentScoreBoard();
-	}
-
-	@Override
-	public void addPlayer(Player player) {
-		Integer levelId = this.settingsParser.getCurrentLevelId();
-		if (levelId == null) {
-			levelId = HangmanConstants.DEFAULT_LEVEL_ID;
-		}
-		addPlayer(player, levelId);
-	}
-
-	@Override
-	public void addPlayer(Player player, int levelId) {
-		String scoreBoardXmlFilePath = this.configurationParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
-		if (scoreBoardXmlFilePath != null && scoreBoardXmlFilePath.length() > 0) {
-			this.scoreBoardMgr
-					.addPlayer(player, levelId, scoreBoardXmlFilePath);
-		}
+		return this.scoreBoardPersister.getCurrentScoreBoard();
 	}
 
 	@Override
 	public List<WordItem> getWords() {
-		Integer languageId = this.settingsParser.getCurrentLanguageId();
-		if(languageId != null){
+		Integer languageId = this.settingsPersister.getCurrentLanguageId();
+		if (languageId != null) {
 			return getWordsByLanguage(languageId);
 		}
-		
+
+		return null;
+	}
+
+	@Override
+	public void addScoreBoard(ScoreBoard scoreBoard) {
+		// String scoreBoardXmlFilePath = this.configurationParser
+		// .getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
+		// if (scoreBoardXmlFilePath != null && scoreBoardXmlFilePath.length() >
+		// 0) {
+		Integer levelId = this.settingsPersister.getCurrentLevelId();
+		if (levelId == null) {
+			levelId = HangmanConstants.DEFAULT_LEVEL_ID;
+		}
+		this.scoreBoardPersister.addScoreBoard(scoreBoard, levelId);
+		// }
+	}
+
+	@Override
+	public void setCurrentLanguage(int languageId) {
+		this.settingsPersister.setCurrentLanguageId(languageId);
+
+	}
+
+	@Override
+	public void setCurrentLevel(int levelId) {
+		this.settingsPersister.setCurrentLevelId(levelId);
+	}
+
+	@Override
+	public void setCurrentScoreBoardSize(int scoreBoardSize) {
+		this.settingsPersister.setCurrentScoreBoardSize(scoreBoardSize);
+	}
+
+	@Override
+	public WordItem getWord(int wordId) {
+		this.wordParser.getWord(wordId);
 		return null;
 	}
 

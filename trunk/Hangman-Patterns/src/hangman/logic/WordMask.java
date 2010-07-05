@@ -2,6 +2,7 @@ package hangman.logic;
 
 import hangman.constants.HangmanConstants;
 import hangman.domain.WordItem;
+import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.util.Observable;
 
@@ -13,9 +14,11 @@ import java.util.Observable;
  */
 public class WordMask extends Observable {
 
-	private String originalWord;
+	private WordItem wordItem;
 	private String maskedWord;
-	private String proverb;
+	private StringBuilder usedLetters;
+	private int totalMistakes;
+
 	/**
 	 * True - visible letter, false - otherwise.
 	 */
@@ -27,8 +30,9 @@ public class WordMask extends Observable {
 	private Character lastRevealedLetter;
 
 	public WordMask(WordItem wordItem) {
-		this.originalWord = wordItem.getContent();
-		this.proverb = wordItem.getProverb();
+		this.wordItem = wordItem;
+		this.usedLetters = new StringBuilder();
+		this.totalMistakes = 0;
 		initialize();
 		constructMaskedWord();
 	}
@@ -38,14 +42,16 @@ public class WordMask extends Observable {
 	 * 
 	 * @param originalWord
 	 */
-	public void setOriginalWord(String originalWord) {
-		if (originalWord != null) {
-			this.originalWord = originalWord;
-		} else {
-			this.originalWord = "";
+	public void setWordItem(WordItem wordItem) {
+		if (wordItem != null) {
+			this.wordItem = wordItem;
 		}
 		initialize();
 		constructMaskedWord();
+	}
+
+	public WordItem getWordItem() {
+		return this.wordItem;
 	}
 
 	public char getLastRevealedLetter() {
@@ -61,7 +67,7 @@ public class WordMask extends Observable {
 	}
 
 	public String getProberb() {
-		return proverb;
+		return this.wordItem.getProverb();
 	}
 
 	/**
@@ -71,26 +77,10 @@ public class WordMask extends Observable {
 	 * @return True - if user has revealed a letter, false - otherwise.
 	 */
 	public boolean revealLetter(char letter) {
-		int firstLetterIndex = this.originalWord.indexOf(letter);
-		if (firstLetterIndex >= 0) {
-			this.numberOfrevealedLetters = 0;
-			for (int index = firstLetterIndex; index < mask.length; index++) {
-				if (letter == this.originalWord.charAt(index)
-						&& mask[index] == false) {
-					mask[index] = true;
-					this.numberOfrevealedLetters++;
-				}
-			}
-			constructMaskedWord();
-			this.lastRevealedLetter = letter;
-			setChanged();
-			notifyObservers();
-			return true;
-		}
+		boolean revealedLetter = processLetter(letter);
 		setChanged();
 		notifyObservers();
-		return false;
-
+		return revealedLetter;
 	}
 
 	/**
@@ -113,6 +103,16 @@ public class WordMask extends Observable {
 			return false;
 		}
 	}
+	
+	public Memento saveToMemento() {
+		return new Memento(this.wordItem.getId(), totalMistakes, usedLetters.toString());
+	}
+	
+	public void restoreFromMemento(Memento memento) {
+		memento.getSavedWordId();
+		this.totalMistakes = memento.getSavedTotalMistakes();
+		this.usedLetters = new StringBuilder(memento.getSavedUsedLetters());
+	}
 
 	/**
 	 * Gets next masked letter to be revealed.
@@ -123,7 +123,7 @@ public class WordMask extends Observable {
 	private char getNextLetterToReveal() {
 		for (int index = 0; index < this.mask.length; index++) {
 			if (mask[index] == false) {
-				return this.originalWord.charAt(index);
+				return this.wordItem.getContent().charAt(index);
 			}
 		}
 		return HangmanConstants.MASK_SYMBOL;
@@ -131,9 +131,10 @@ public class WordMask extends Observable {
 
 	private void constructMaskedWord() {
 		this.maskedWord = "";
+		String originalWord = this.wordItem.getContent();
 		for (int index = 0; index < mask.length; index++) {
 			if (this.mask[index] == true) {
-				this.maskedWord += this.originalWord.charAt(index);
+				this.maskedWord += originalWord.charAt(index);
 			} else {
 				this.maskedWord += HangmanConstants.MASK_SYMBOL;
 			}
@@ -142,8 +143,64 @@ public class WordMask extends Observable {
 	}
 
 	private void initialize() {
-		this.mask = new boolean[this.originalWord.length()];
+		this.mask = new boolean[this.wordItem.getContent().length()];
 		this.numberOfrevealedLetters = 0;
 		this.lastRevealedLetter = null;
+	}
+
+	private void saveUsedLetter(char letter) {
+		this.usedLetters.append(letter);
+	}
+
+	private boolean processLetter(char letter) {
+		if (isWordRevealed() == true) {
+			return false;
+		}
+		String originalWord = this.wordItem.getContent();
+		int firstLetterIndex = originalWord.indexOf(letter);
+		this.numberOfrevealedLetters = 0;
+		if (firstLetterIndex >= 0) {
+			for (int index = firstLetterIndex; index < mask.length; index++) {
+				if (letter == originalWord.charAt(index)
+						&& mask[index] == false) {
+					mask[index] = true;
+					this.numberOfrevealedLetters++;
+				}
+			}
+			constructMaskedWord();
+		}
+		this.lastRevealedLetter = letter;
+		saveUsedLetter(letter);
+		if (this.numberOfrevealedLetters > 0) {
+			return true;
+		} else {
+			this.totalMistakes++;
+			return false;
+		}
+	}
+
+	public static class Memento {
+		
+		private final int wordId;
+		private final int totalMistakes;
+		private final String usedLetters;
+
+		private Memento(int wordId, int mistakes, String usedLetters) {
+			this.wordId = wordId;
+			this.totalMistakes = mistakes;
+			this.usedLetters = usedLetters;
+		}
+		
+		private int getSavedWordId() {
+			return this.wordId;
+		}
+		
+		private int getSavedTotalMistakes() {
+			return this.totalMistakes;
+		}
+		
+		private String getSavedUsedLetters() {
+			return this.usedLetters;
+		}
 	}
 }

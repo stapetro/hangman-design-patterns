@@ -1,6 +1,5 @@
 package hangman.persistence;
 
-import hangman.domain.Player;
 import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
@@ -22,29 +21,34 @@ public interface IPersistenceFacade {
 	public void removeCategory(int categoryId);
 
 	public List<ConfigurationItem> getLanguages();
+
+	public LanguageItem getCurrentLanguage();
 	
-	public LanguageItem getCurrentLanguage();	
+	public void setCurrentLanguage(int languageId);
 
 	public void addLanguage(LanguageItem languageItem);
 
 	public void removeLanguage(int languageId);
-	
+
 	public List<ConfigurationItem> getLevels();
-	
+
 	public LevelItem getCurrentLevel();
 	
+	public void setCurrentLevel(int levelId);
+
 	public int getCurrentScoreBoardSize();
 	
-	public List<WordItem> getWordsByLanguage(int langaugeId);
-	
-	public List<WordItem> getWords();
-	
-	public ScoreBoard getScoreBoardByLevel(int levelId);
-	
-	public ScoreBoard getCurrentScoreBoard();
-	
-	public void addPlayer(Player player);
-	
-	public void addPlayer(Player player, int levelId);
+	public void setCurrentScoreBoardSize(int scoreBoardSize);
 
+	public WordItem getWord(int wordId);
+	
+	public List<WordItem> getWordsByLanguage(int langaugeId);
+
+	public List<WordItem> getWords();
+
+	public ScoreBoard getScoreBoardByLevel(int levelId);
+
+	public ScoreBoard getCurrentScoreBoard();
+
+	public void addScoreBoard(ScoreBoard scoreBoard);
 }

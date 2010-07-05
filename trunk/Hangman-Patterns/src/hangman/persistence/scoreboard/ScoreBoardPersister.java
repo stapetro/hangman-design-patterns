@@ -1,28 +1,28 @@
 package hangman.persistence.scoreboard;
 
 import hangman.constants.HangmanConstants;
-import hangman.constants.PlayerProperty;
 import hangman.domain.Player;
 import hangman.domain.ScoreBoard;
 import hangman.logic.xml.XmlManager;
 import hangman.persistence.config.ConfigurationParser;
-import hangman.persistence.config.SettingsParser;
+import hangman.persistence.config.SettingsPersister;
 import hangman.utils.ConfigurationUtility;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ScoreBoardManager {
+public class ScoreBoardPersister {
 
 	private ConfigurationParser configParser;
 	private XmlManager scoreBoardXmlManager;
-	private SettingsParser settingsParser;
+	private SettingsPersister settingsParser;
 
-	public ScoreBoardManager(ConfigurationParser configParser,
-			SettingsParser settingsParser) {
+	public ScoreBoardPersister(ConfigurationParser configParser,
+			SettingsPersister settingsParser) {
 		this.configParser = configParser;
 		String scoreBoardXmlFilePath = this.configParser
 				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
@@ -32,7 +32,7 @@ public class ScoreBoardManager {
 	}
 
 	public ScoreBoard getScoreBoardByLevelId(int levelId) {
-		ScoreBoard scoreBoard = createScoreBoard();
+		ScoreBoard scoreBoard = new ScoreBoard();
 		if (this.scoreBoardXmlManager != null) {
 			Node scoreBoardNode = this.scoreBoardXmlManager.getNodeByAttribute(
 					HangmanConstants.SCORE_BOARD_LEVEL_ID_ATTR, String
@@ -62,38 +62,31 @@ public class ScoreBoardManager {
 		}
 		return getScoreBoardByLevelId(levelId);
 	}
-
-	public void addPlayer(Player player, int levelId, String xmlFilePath) {
+	
+	public void addScoreBoard(ScoreBoard scoreBoard, int levelId) {
 		if (this.scoreBoardXmlManager != null) {
 			Node scoreBoardNode = this.scoreBoardXmlManager.getNodeByAttribute(
 					HangmanConstants.SCORE_BOARD_LEVEL_ID_ATTR, String
 							.valueOf(levelId));
-			if (scoreBoardNode == null) {
-				// store attribute name and value
-				HashMap<String, String> attributes = new HashMap<String, String>();
-				attributes.put(HangmanConstants.SCORE_BOARD_LEVEL_ID_ATTR,
-						String.valueOf(levelId));
-				scoreBoardNode = this.scoreBoardXmlManager.addNode(
-						HangmanConstants.SCORE_BOARD_NODE_NAME, attributes, null);
+			if (scoreBoardNode != null) {
+				this.scoreBoardXmlManager.removeNode(scoreBoardNode);
 			}
+			// store attribute name and value
+			HashMap<String, String> attributes = new HashMap<String, String>();
+			attributes.put(HangmanConstants.SCORE_BOARD_LEVEL_ID_ATTR, String
+					.valueOf(levelId));
+			scoreBoardNode = this.scoreBoardXmlManager.addNode(
+					HangmanConstants.SCORE_BOARD_NODE_NAME, attributes, null);
 			// store node name and text content
-			HashMap<String, String> children = player.getProperties();
-			this.scoreBoardXmlManager.addNode(
-					HangmanConstants.PLAYER_NODE_NAME, null, children,
-					scoreBoardNode);
-			this.scoreBoardXmlManager.writeDocumentToXmlFile(xmlFilePath);
-		}
+			HashMap<String, String> childProperties = null;
+			List<Player> players = scoreBoard.getTopPlayers();
+			for(Player currPlayer : players) {
+				childProperties = currPlayer.getProperties();
+				this.scoreBoardXmlManager.addNode(
+						HangmanConstants.PLAYER_NODE_NAME, null, childProperties,
+						scoreBoardNode);
+			}								
+			this.scoreBoardXmlManager.writeDocumentToXmlFile();
+		}		
 	}
-
-	private ScoreBoard createScoreBoard() {
-		ScoreBoard scoreBoard = null;
-		Integer scoreBoardSize = this.settingsParser.getCurrentScoreBoardSize();
-		if (scoreBoardSize != null) {
-			scoreBoard = new ScoreBoard(scoreBoardSize);
-		} else {
-			scoreBoard = new ScoreBoard();
-		}
-		return scoreBoard;
-	}
-
 }
