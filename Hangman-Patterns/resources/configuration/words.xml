@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <words>
 	<word lang_id="2" category_id="1">	
-		<content>The Deadly Bees</content>
+		<content>proverb</content>
 		<proverb>The Deadly Bees proverb shit</proverb>		
 	</word>
 	<word lang_id="1" category_id="1">	
-		<content>българска дума</content>
-		<proverb>пословица</proverb>		
+		<content>пиле</content>
+		<proverb>рано пиле рано пее</proverb>		
 	</word>
 	<word lang_id="2" category_id="1">	
-		<content>testWord</content>
-		<proverb>testProverb</proverb>		
+		<content>home</content>
+		<proverb>Shop until the cows come home</proverb>		
 	</word>	
 </words>

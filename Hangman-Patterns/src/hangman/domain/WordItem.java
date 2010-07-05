@@ -13,6 +13,10 @@ public class WordItem {
 	private String content;
 	private String proverb;
 
+	public WordItem() {
+		this("test", "testvane mu e maikata", null, null);
+	}
+
 	public WordItem(String content, String proverb, LanguageItem lang,
 			ConfigurationItem category) {
 		this.content = content;
