@@ -1,18 +1,23 @@
 package hangman.presentation;
 
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import java.awt.GridBagConstraints;
-import javax.swing.JCheckBox;
-import javax.swing.JScrollPane;
+import hangman.logic.WordMask;
 
-public class ConsolePanel extends JPanel {
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+public class ConsolePanel extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane consoleScrollPane = null;
 	private JTextArea consoleTextArea = null;
-	
+
 	/**
 	 * This is the default constructor
 	 */
@@ -45,9 +50,9 @@ public class ConsolePanel extends JPanel {
 	}
 
 	/**
-	 * This method initializes consoleScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
+	 * This method initializes consoleScrollPane
+	 * 
+	 * @return javax.swing.JScrollPane
 	 */
 	private JScrollPane getConsoleScrollPane() {
 		if (consoleScrollPane == null) {
@@ -58,9 +63,9 @@ public class ConsolePanel extends JPanel {
 	}
 
 	/**
-	 * This method initializes consoleTextArea	
-	 * 	
-	 * @return javax.swing.JTextArea	
+	 * This method initializes consoleTextArea
+	 * 
+	 * @return javax.swing.JTextArea
 	 */
 	private JTextArea getConsoleTextArea() {
 		if (consoleTextArea == null) {
@@ -68,6 +73,17 @@ public class ConsolePanel extends JPanel {
 			consoleTextArea.setText("kak si");
 		}
 		return consoleTextArea;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		WordMask wordMask;
+		if (o instanceof WordMask) {
+			wordMask = (WordMask) o;
+			JOptionPane.showMessageDialog(null, wordMask.getMaskedWord());
+		}
+		
+
 	}
 
 }
