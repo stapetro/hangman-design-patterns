@@ -1,6 +1,7 @@
 package hangman.presentation;
 
 import hangman.languages.LanguageResourcesFactory;
+import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -9,9 +10,9 @@ import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 
 public class WordPanel extends JPanel {
 
@@ -24,12 +25,14 @@ public class WordPanel extends JPanel {
 	private JPanel alphabetPanel = null;
 	private JLabel secretWordLabel = null;
 
+	private WordMask wordMask;
+
 	/**
 	 * This is the default constructor
 	 */
-	public WordPanel() {
+	public WordPanel(WordMask wordMaskObj) {
 		super();
-		initialize();
+		initialize(wordMaskObj);
 	}
 
 	/**
@@ -37,12 +40,12 @@ public class WordPanel extends JPanel {
 	 * 
 	 * @return void
 	 */
-	private void initialize() {
+	private void initialize(WordMask wordMaskObj) {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
 
 		secretWordLabel = new JLabel();
-		//TODO should take the word from the game
-		secretWordLabel.setText("SECRET WORD _ _ _ ");
+		this.wordMask = wordMaskObj;
+		refreshMaskedWord();
 		this.setSize(300, 200);
 		this.setLayout(new BorderLayout());
 		this.add(getAlphabetPanel(), BorderLayout.SOUTH);
@@ -63,6 +66,13 @@ public class WordPanel extends JPanel {
 	}
 
 	/**
+	 * Refreshes the value of the masked word in the panel and rewrites it
+	 */
+	private void refreshMaskedWord() {
+		secretWordLabel.setText(wordMask.getMaskedWord());
+	}
+
+	/**
 	 * This method initializes alphabetPanel
 	 * 
 	 * @return javax.swing.JPanel
@@ -75,16 +85,19 @@ public class WordPanel extends JPanel {
 		return alphabetPanel;
 	}
 
-}
+	/**
+	 * class handlink button clicks.
+	 * 
+	 */
+	class LetterButtonHangler implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			String selectedLetter = event.getActionCommand();
+			wordMask.revealLetter(selectedLetter.charAt(0));
+			refreshMaskedWord();
 
-/**
- * class handlink button clicks.
- * 
- */
-class LetterButtonHangler implements ActionListener {
-	public void actionPerformed(ActionEvent event) {
-		// TODO the below is for test purpose. Should be implemented properly
-		// later
-		JOptionPane.showMessageDialog(null, event.getActionCommand());
+			JButton sourceButton = (JButton) event.getSource();
+			sourceButton.setEnabled(false);
+		}
 	}
+
 }
