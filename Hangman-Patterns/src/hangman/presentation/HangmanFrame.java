@@ -1,6 +1,8 @@
 package hangman.presentation;
 
+import hangman.domain.WordItem;
 import hangman.languages.LanguageResourcesFactory;
+import hangman.logic.WordGenerator;
 import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
@@ -49,7 +51,7 @@ public class HangmanFrame extends JFrame {
 	/**
 	 * Object for working with the work mask
 	 */
-	private WordMask wordMask;
+	private WordMask wordMask; // @jve:decl-index=0:
 
 	/**
 	 * This is the default constructor
@@ -67,14 +69,14 @@ public class HangmanFrame extends JFrame {
 	 */
 	private void initialize() {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
-		
-		
+		wordMask = getWordMask();
+
 		this.setSize(652, 452);
 		this.setJMenuBar(getMenu());
 		this.setContentPane(getJContentPane());
 		this.setTitle(resourceBundle.getString(HANGMAN_STR));
 
-		wordsPanel = new WordPanel();
+		wordsPanel = new WordPanel(wordMask);
 		jContentPane.add(wordsPanel, BorderLayout.SOUTH);
 	}
 
@@ -93,10 +95,19 @@ public class HangmanFrame extends JFrame {
 
 	}
 
-	private void getWordMask(){
-		
+	/**
+	 * This method initializes the word mask object
+	 * 
+	 * @return the word mask
+	 */
+	private WordMask getWordMask() {
+		if (wordMask == null) {
+			WordItem word = WordGenerator.getRandomWordItem();
+			wordMask = new WordMask(word);
+		}
+		return wordMask;
 	}
-	
+
 	/**
 	 * This method initializes jContentPane
 	 * 

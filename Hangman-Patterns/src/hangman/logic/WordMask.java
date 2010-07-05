@@ -1,6 +1,7 @@
 package hangman.logic;
 
 import hangman.constants.HangmanConstants;
+import hangman.domain.WordItem;
 
 /**
  * Represents mask of the original word.
@@ -12,6 +13,7 @@ public class WordMask {
 
 	private String originalWord;
 	private String maskedWord;
+	private String proverb;
 	/**
 	 * True - visible letter, false - otherwise.
 	 */
@@ -22,8 +24,9 @@ public class WordMask {
 	private int numberOfrevealedLetters;
 	private Character lastRevealedLetter;
 
-	public WordMask(String originalWord) {
-		this.originalWord = originalWord;
+	public WordMask(WordItem wordItem) {
+		this.originalWord = wordItem.getContent();
+		this.proverb = wordItem.getProverb();
 		initialize();
 		constructMaskedWord();
 	}
@@ -53,6 +56,10 @@ public class WordMask {
 
 	public int getNumberOfRevealedLetters() {
 		return this.numberOfrevealedLetters;
+	}
+
+	public String getProberb() {
+		return proverb;
 	}
 
 	/**
@@ -99,7 +106,7 @@ public class WordMask {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Gets next masked letter to be revealed.
 	 * 
@@ -113,7 +120,7 @@ public class WordMask {
 			}
 		}
 		return HangmanConstants.MASK_SYMBOL;
-	}	
+	}
 
 	private void constructMaskedWord() {
 		this.maskedWord = "";
