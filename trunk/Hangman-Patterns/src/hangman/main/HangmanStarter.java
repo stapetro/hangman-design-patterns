@@ -15,22 +15,22 @@ public class HangmanStarter {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		IPersistenceFacade facade = new PersistenceFacade();
-		List<LanguageItem> langs = facade.getLanguages();
-		if (langs != null) {
-			System.out.println(langs.toString());
-		}
-		System.out.println("Current lang:\n" + facade.getCurrentLanguage());
-		System.out.println("Current score board size: "
-				+ facade.getCurrentScoreBoardSize());
-		List<LevelItem> levels = facade.getLevels();
-		if (levels != null) {
-			System.out.println(levels.toString());
-		}
-		System.out.println(facade.getCurrentLevel());
-		
-		ResourceBundle languageResource = LanguageResourcesFactory.getLanguageResource();
-		System.out.println(languageResource.getString("language"));
+//		IPersistenceFacade facade = new PersistenceFacade();
+//		List<LanguageItem> langs = facade.getLanguages();
+//		if (langs != null) {
+//			System.out.println(langs.toString());
+//		}
+//		System.out.println("Current lang:\n" + facade.getCurrentLanguage());
+//		System.out.println("Current score board size: "
+//				+ facade.getCurrentScoreBoardSize());
+//		List<LevelItem> levels = facade.getLevels();
+//		if (levels != null) {
+//			System.out.println(levels.toString());
+//		}
+//		System.out.println(facade.getCurrentLevel());
+//		
+//		ResourceBundle languageResource = LanguageResourcesFactory.getLanguageResource();
+//		System.out.println(languageResource.getString("language"));
 	}
 
 }

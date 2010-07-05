@@ -1,6 +1,7 @@
 package hangman.presentation;
 
 import hangman.languages.LanguageResourcesFactory;
+import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
 import java.util.ResourceBundle;
@@ -22,13 +23,13 @@ public class HangmanFrame extends JFrame {
 	private static final String SAVE_GAME_STR = "saveGame";
 	private static final String EXIT_STR = "exit";
 	private static final String GAME_OPTIONS_STR = "gameOptions";
-	private static final String REVEAL_LETTER_STR = "revealLetter";  //  @jve:decl-index=0:
+	private static final String REVEAL_LETTER_STR = "revealLetter"; // @jve:decl-index=0:
 	private static final String REVEAL_WORD_STR = "revealWord";
 
 	/**
 	 * Resource Bundle object for internationalization
 	 */
-	private ResourceBundle resourceBundle;  //  @jve:decl-index=0:
+	private ResourceBundle resourceBundle; // @jve:decl-index=0:
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -40,10 +41,15 @@ public class HangmanFrame extends JFrame {
 	private JMenu gameOptionsMenu = null;
 	private JMenuItem revealNextLetterMenuItem = null;
 	private JMenuItem revealWordMenuItem = null;
-	
+
 	private HangmanPanel hangmanPanel;
 	private ConsolePanel consolePanel;
 	private WordPanel wordsPanel;
+
+	/**
+	 * Object for working with the work mask
+	 */
+	private WordMask wordMask;
 
 	/**
 	 * This is the default constructor
@@ -62,11 +68,12 @@ public class HangmanFrame extends JFrame {
 	private void initialize() {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
 		
+		
 		this.setSize(652, 452);
 		this.setJMenuBar(getMenu());
 		this.setContentPane(getJContentPane());
 		this.setTitle(resourceBundle.getString(HANGMAN_STR));
-		
+
 		wordsPanel = new WordPanel();
 		jContentPane.add(wordsPanel, BorderLayout.SOUTH);
 	}
@@ -76,16 +83,20 @@ public class HangmanFrame extends JFrame {
 	 * changed.
 	 */
 	private void initializeComponents() {
-		//add the hangman panel for hanging users
+		// add the hangman panel for hanging users
 		hangmanPanel = new HangmanPanel();
 		jContentPane.add(hangmanPanel, BorderLayout.WEST);
-		
-		//add the console panel
+
+		// add the console panel
 		consolePanel = new ConsolePanel();
 		jContentPane.add(consolePanel, BorderLayout.EAST);
-		
+
 	}
 
+	private void getWordMask(){
+		
+	}
+	
 	/**
 	 * This method initializes jContentPane
 	 * 

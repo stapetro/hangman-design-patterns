@@ -157,4 +157,14 @@ public class PersistenceFacade implements IPersistenceFacade {
 		}
 	}
 
+	@Override
+	public List<WordItem> getWords() {
+		Integer languageId = this.settingsParser.getCurrentLanguageId();
+		if(languageId != null){
+			return getWordsByLanguage(languageId);
+		}
+		
+		return null;
+	}
+
 }

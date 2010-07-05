@@ -37,6 +37,8 @@ public interface IPersistenceFacade {
 	
 	public List<WordItem> getWordsByLanguage(int langaugeId);
 	
+	public List<WordItem> getWords();
+	
 	public ScoreBoard getScoreBoardByLevel(int levelId);
 	
 	public ScoreBoard getCurrentScoreBoard();
