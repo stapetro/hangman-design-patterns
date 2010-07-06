@@ -36,10 +36,13 @@ public interface IPersistenceFacade {
 	public LevelItem getCurrentLevel();
 	
 	public void setCurrentLevel(int levelId);
+	
+	public LevelItem setCurrentLevelFromWordSize(int wordSize);
 
 	public int getCurrentScoreBoardSize();
 	
 	public void setCurrentScoreBoardSize(int scoreBoardSize);
+	
 
 	public WordItem getWord(int wordId);
 	

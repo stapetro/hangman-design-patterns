@@ -289,6 +289,7 @@ public class HangmanFrame extends JFrame {
 		
 		public void actionPerformed(ActionEvent e){
 			wordMask.revealLetter();
+			wordsPanel.update(wordMask, null);
 		}
 	}
 }
