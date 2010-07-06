@@ -125,7 +125,6 @@ public class HangmanFrame extends JFrame {
 	 */
 	private WordMask initializeWordMask() {
 		WordItem word = WordGenerator.getRandomWordItem();
-		;
 		if (wordMask == null) {
 			wordMask = new WordMask(word);
 		} else {

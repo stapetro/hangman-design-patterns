@@ -123,7 +123,7 @@ public class WordPanel extends JPanel implements Observer {
 	 */
 	private void refreshMaskedWord() {
 		secretWordLabel.setText(wordMask.getMaskedWord());
-		updateUI();
+//		updateUI();
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class WordPanel extends JPanel implements Observer {
 		public void actionPerformed(ActionEvent event) {
 			String selectedLetter = event.getActionCommand();
 			wordMask.revealLetter(selectedLetter.charAt(0));
-			//refreshMaskedWord();
+			refreshMaskedWord();
 
 			JButton sourceButton = (JButton) event.getSource();
 			sourceButton.setEnabled(false);
