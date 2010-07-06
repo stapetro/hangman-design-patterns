@@ -20,7 +20,7 @@ public class WordMask extends Observable {
 	private String maskedWord;
 	private StringBuilder usedLetters;
 	private int totalMistakes;
-	private final int maxNumberOfMistakes;
+	private int maxNumberOfMistakes;
 
 	/**
 	 * True - visible letter, false - otherwise.
@@ -33,13 +33,6 @@ public class WordMask extends Observable {
 	private char lastRevealedLetter;
 
 	public WordMask(WordItem wordItem) {
-		LevelItem currentLevel = PersistenceFacadeSingleton.getInstance()
-				.getCurrentLevel();
-		if (currentLevel != null) {
-			this.maxNumberOfMistakes = currentLevel.getTotalMistakes();
-		} else {
-			this.maxNumberOfMistakes = Integer.MAX_VALUE;
-		}
 		setWordItem(wordItem);
 	}
 
@@ -78,7 +71,7 @@ public class WordMask extends Observable {
 	public String getProberb() {
 		return this.wordItem.getProverb();
 	}
-	
+
 	public int getTotalMistakes() {
 		return totalMistakes;
 	}
@@ -120,9 +113,9 @@ public class WordMask extends Observable {
 			return false;
 		}
 	}
-	
+
 	public boolean isHung() {
-		if(this.totalMistakes > this.maxNumberOfMistakes) {
+		if (this.totalMistakes > this.maxNumberOfMistakes) {
 			return true;
 		}
 		return false;
@@ -192,6 +185,14 @@ public class WordMask extends Observable {
 		this.totalMistakes = 0;
 		this.lastRevealedLetter = ' ';
 		this.usedLetters = new StringBuilder();
+		LevelItem currentLevel = PersistenceFacadeSingleton.getInstance()
+				.getCurrentLevel();
+		if (currentLevel != null) {
+			this.maxNumberOfMistakes = currentLevel.getTotalMistakes();
+		} else {
+			this.maxNumberOfMistakes = Integer.MAX_VALUE;
+		}
+
 		constructMaskedWord();
 	}
 
