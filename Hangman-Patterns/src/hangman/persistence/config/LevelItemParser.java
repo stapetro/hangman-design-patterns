@@ -39,7 +39,7 @@ public class LevelItemParser implements IConfigurationItemParser {
 	public List<ConfigurationItem> getConfigurationItems() {
 		if (this.levelXmlManager != null) {
 			NodeList levels = this.levelXmlManager
-					.getNodesByName(HangmanConstants.LEVEL_NODE_NAME);
+					.getNodesByName(HangmanConstants.LEVEL_TAG_NAME);
 			int size = levels.getLength();
 			if (size > 0) {
 				List<ConfigurationItem> levelItems = new ArrayList<ConfigurationItem>();
