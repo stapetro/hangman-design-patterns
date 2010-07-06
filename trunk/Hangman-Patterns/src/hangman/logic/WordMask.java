@@ -91,6 +91,8 @@ public class WordMask extends Observable {
 	public boolean revealLetter() {
 		char letterToReveal = getNextLetterToReveal();
 		if (letterToReveal != HangmanConstants.MASK_SYMBOL) {
+			//TODO verify we really need it
+			notifyObservers();
 			return revealLetter(letterToReveal);
 		}
 		return false;

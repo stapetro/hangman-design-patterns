@@ -5,20 +5,21 @@ import hangman.domain.config.ConfigurationItem;
 import hangman.languages.LanguageResourcesFactory;
 import hangman.logic.WordMask;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class WordPanel extends JPanel {
+public class WordPanel extends JPanel implements Observer {
 
 	private static final String ALPHABET_STR = "alphabet";
 	private static final String CURRENT_WORD_MSG = "currentWordMessage";
@@ -53,10 +54,10 @@ public class WordPanel extends JPanel {
 	private void initialize(WordMask wordMaskObj) {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
 		this.wordMask = wordMaskObj;
-		
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		this.setLayout(gridBagLayout);
 		this.setSize(100, 200);
 		this.categoryWordLabel = new JLabel();
@@ -64,33 +65,33 @@ public class WordPanel extends JPanel {
 		this.categoryWordLabel.setText(resourceBundle
 				.getString(CURRENT_CATEGORY_MSG)
 				+ " : ");
-		
+
 		this.categoryWordValueLabel = new JLabel();
 		this.categoryWordValueLabel.setFont(STANDARD_FONT);
-		
+
 		this.secretWordLabel = new JLabel();
 		this.secretWordLabel.setFont(STANDARD_FONT);
-		
+
 		this.wordMessageLabel = new JLabel();
 		wordMessageLabel.setFont(STANDARD_FONT);
 		wordMessageLabel.setText(resourceBundle.getString(CURRENT_WORD_MSG)
 				+ " : ");
-		
+
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		this.add(categoryWordLabel, c);
-		c.fill = GridBagConstraints.HORIZONTAL;	
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
-		c.gridy = 0;		
+		c.gridy = 0;
 		this.add(categoryWordValueLabel, c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-//		c.weightx = 0.1;
+		// c.weightx = 0.1;
 		c.gridx = 0;
 		c.gridy = 1;
 		this.add(wordMessageLabel, c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-//		c.weightx = 0.1;
+		// c.weightx = 0.1;
 		c.gridx = 1;
 		c.gridy = 1;
 		this.add(secretWordLabel, c);
@@ -122,6 +123,7 @@ public class WordPanel extends JPanel {
 	 */
 	private void refreshMaskedWord() {
 		secretWordLabel.setText(wordMask.getMaskedWord());
+		updateUI();
 	}
 
 	/**
@@ -164,6 +166,13 @@ public class WordPanel extends JPanel {
 			JButton sourceButton = (JButton) event.getSource();
 			sourceButton.setEnabled(false);
 		}
+	}
+
+	@Override
+	public void update(Observable wordMaskObservable, Object arg) {
+		System.out.println(wordMask.getMaskedWord());
+		refreshMaskedWord();
+		System.out.println(secretWordLabel.getText());
 	}
 
 }
