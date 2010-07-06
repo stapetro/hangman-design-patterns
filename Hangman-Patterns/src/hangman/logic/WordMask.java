@@ -78,6 +78,14 @@ public class WordMask extends Observable {
 	public String getProberb() {
 		return this.wordItem.getProverb();
 	}
+	
+	public int getTotalMistakes() {
+		return totalMistakes;
+	}
+
+	public int getMaxNumberOfMistakes() {
+		return maxNumberOfMistakes;
+	}
 
 	/**
 	 * 
