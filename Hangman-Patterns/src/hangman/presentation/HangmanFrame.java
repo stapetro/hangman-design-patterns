@@ -115,6 +115,7 @@ public class HangmanFrame extends JFrame {
 
 	public void initializeObservers() {
 		wordMask.addObserver(consolePanel);
+		wordMask.addObserver(wordsPanel);
 	}
 
 	/**
@@ -185,8 +186,9 @@ public class HangmanFrame extends JFrame {
 		if (gameOptionsMenu == null) {
 			gameOptionsMenu = new JMenu();
 			gameOptionsMenu.setText(resourceBundle.getString(GAME_OPTIONS_STR));
-			gameOptionsMenu.add(getRevealNextLetterMenuItem());
-			gameOptionsMenu.add(getRevealWordMenuItem());
+			gameOptionsMenu.add(new RevealWordAction());
+			// gameOptionsMenu.add(getRevealNextLetterMenuItem());
+			// gameOptionsMenu.add(getRevealWordMenuItem());
 		}
 		return gameOptionsMenu;
 	}
@@ -275,6 +277,18 @@ public class HangmanFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			System.exit(NORMAL);
+		}
+	}
+
+	private class RevealWordAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public RevealWordAction() {
+			super(resourceBundle.getString(REVEAL_LETTER_STR));
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			wordMask.revealLetter();
 		}
 	}
 }
