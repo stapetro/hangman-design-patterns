@@ -76,14 +76,14 @@ public class ScoreBoardPersister {
 			attributes.put(HangmanConstants.SCORE_BOARD_LEVEL_ID_ATTR, String
 					.valueOf(levelId));
 			scoreBoardNode = this.scoreBoardXmlManager.addNode(
-					HangmanConstants.SCORE_BOARD_NODE_NAME, attributes, null);
+					HangmanConstants.SCORE_BOARD_TAG_NAME, attributes, null);
 			// store node name and text content
 			HashMap<String, String> childProperties = null;
 			List<Player> players = scoreBoard.getTopPlayers();
 			for(Player currPlayer : players) {
 				childProperties = currPlayer.getProperties();
 				this.scoreBoardXmlManager.addNode(
-						HangmanConstants.PLAYER_NODE_NAME, null, childProperties,
+						HangmanConstants.PLAYER_TAG_NAME, null, childProperties,
 						scoreBoardNode);
 			}								
 			this.scoreBoardXmlManager.writeDocumentToXmlFile();

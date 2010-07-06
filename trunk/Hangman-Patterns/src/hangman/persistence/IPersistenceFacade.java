@@ -1,10 +1,12 @@
 package hangman.persistence;
 
+import hangman.domain.GameState;
 import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
+import hangman.logic.WordMask.Memento;
 
 import java.util.List;
 
@@ -51,4 +53,8 @@ public interface IPersistenceFacade {
 	public ScoreBoard getCurrentScoreBoard();
 
 	public void addScoreBoard(ScoreBoard scoreBoard);
+	
+	public void saveGameState(GameState gameState);
+	
+	public List<GameState> getSavedGameStates();
 }

@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -116,10 +117,10 @@ public class XmlManager {
 		NodeList foundNodes = this.xmlDocument.getElementsByTagName(nodeName);
 		return foundNodes;
 	}
-	
+
 	public Node getNodeByName(String nodeName) {
 		NodeList foundNodes = getNodesByName(nodeName);
-		if(foundNodes != null && foundNodes.getLength() > 0) {
+		if (foundNodes != null && foundNodes.getLength() > 0) {
 			return foundNodes.item(0);
 		}
 		return null;
@@ -166,36 +167,45 @@ public class XmlManager {
 		return addNode(newNodeName, attributes, children, this.root);
 	}
 	
+	public Node addNodeWithCDataSection(Node parentNode, String nodeName, String cDataSectionContent) {
+		Node childNode = this.xmlDocument.createElement(nodeName);		
+		CDATASection content = this.xmlDocument.createCDATASection(cDataSectionContent);
+		childNode.appendChild(content);
+		parentNode.appendChild(childNode);
+		return childNode;
+	}
+
 	/**
 	 * Removes child node from root
+	 * 
 	 * @param rootChildNode
 	 * @return Removed node
 	 */
 	public Node removeNode(Node rootChildNode) {
 		return this.root.removeChild(rootChildNode);
 	}
-	
+
 	public boolean writeDocumentToXmlFile(String filePath) {
 		return FileUtility.writeXmlFile(this.xmlDocument, filePath);
-	}	
-	
-	public boolean writeDocumentToXmlFile() {		
+	}
+
+	public boolean writeDocumentToXmlFile() {
 		return FileUtility.writeXmlFile(this.xmlDocument, this.xmlFilePath);
 	}
-	
+
 	private void addChildren(HashMap<String, String> children, Node newNode) {
 		Set<String> childrenNames = children.keySet();
 		Iterator<String> iterator = childrenNames.iterator();
 		String nodeName = null;
 		String nodeValue = null;
 		Node newChildNode = null;
-		Text text = null;
+		Node content = null;
 		while (iterator.hasNext()) {
 			nodeName = iterator.next();
 			nodeValue = children.get(nodeName);
 			newChildNode = this.xmlDocument.createElement(nodeName);
-			text = this.xmlDocument.createTextNode(nodeValue);
-			newChildNode.appendChild(text);
+			content = this.xmlDocument.createTextNode(nodeValue);
+			newChildNode.appendChild(content);
 			newNode.appendChild(newChildNode);
 		}
 	}

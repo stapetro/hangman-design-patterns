@@ -4,6 +4,7 @@ import hangman.constants.HangmanConstants;
 import hangman.domain.WordItem;
 import hangman.persistence.PersistenceFacadeSingleton;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
@@ -193,8 +194,12 @@ public class WordMask extends Observable {
 		}
 	}
 
-	public static class Memento {
-
+	public static class Memento implements Serializable {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2252490418505217405L;
 		private final int wordId;
 		private final String usedLetters;
 

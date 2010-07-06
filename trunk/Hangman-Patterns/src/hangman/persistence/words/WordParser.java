@@ -49,13 +49,13 @@ public class WordParser {
 		}
 		return null;
 	}
-	
+
 	public List<WordItem> getWordsByLanguage(int languageId) {
 		if (this.wordXmlManager != null) {
 			String langIdPropertyName = WordItemProperty.LANGUAGE_ID.toString();
 			List<Node> words = this.wordXmlManager.getNodesByAttribute(
 					langIdPropertyName, String.valueOf(languageId));
-			if (words.size() > 0) {
+			if (words != null && words.size() > 0) {
 				List<WordItem> wordItems = new ArrayList<WordItem>();
 				for (Node word : words) {
 					wordItems.add(createWordItem(word));

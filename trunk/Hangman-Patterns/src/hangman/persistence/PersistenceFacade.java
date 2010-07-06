@@ -4,18 +4,33 @@ import hangman.constants.CategoryItemProperty;
 import hangman.constants.HangmanConstants;
 import hangman.constants.LanguageItemProperty;
 import hangman.constants.LevelItemProperty;
+import hangman.domain.GameState;
 import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
+import hangman.logic.WordMask;
+import hangman.logic.WordMask.Memento;
 import hangman.persistence.config.ConfigurationItemParrserFactory;
 import hangman.persistence.config.ConfigurationParser;
 import hangman.persistence.config.IConfigurationItemParser;
 import hangman.persistence.config.SettingsPersister;
+import hangman.persistence.gamestate.GameStatePersister;
 import hangman.persistence.scoreboard.ScoreBoardPersister;
 import hangman.persistence.words.WordParser;
+import hangman.utils.ObjectSerializerUtility;
 
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 
 //TODO methods should be implemented
@@ -27,6 +42,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 	private IConfigurationItemParser categoryParser;
 	private SettingsPersister settingsPersister;
 	private ScoreBoardPersister scoreBoardPersister;
+	private GameStatePersister gameStatePersister;
 	private WordParser wordParser;
 
 	public PersistenceFacade() {
@@ -43,8 +59,12 @@ public class PersistenceFacade implements IPersistenceFacade {
 		this.settingsPersister = new SettingsPersister(this.configurationParser);
 		this.wordParser = new WordParser(this.configurationParser,
 				this.langConfigParser, this.categoryParser);
-		this.scoreBoardPersister = new ScoreBoardPersister(this.configurationParser,
-				this.settingsPersister);
+		this.scoreBoardPersister = new ScoreBoardPersister(
+				this.configurationParser, this.settingsPersister);
+
+		String gameStateXmlFilePath = this.configurationParser
+				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_GAME_STATE);
+		this.gameStatePersister = new GameStatePersister(gameStateXmlFilePath);
 	}
 
 	@Override
@@ -183,4 +203,20 @@ public class PersistenceFacade implements IPersistenceFacade {
 		return this.wordParser.getWord(wordId);
 	}
 
+	@Override
+	public void saveGameState(GameState gameState) {
+		Integer languageId = this.settingsPersister.getCurrentLanguageId();
+		if (languageId != null) {
+			this.gameStatePersister.saveGameState(gameState, languageId);
+		}
+	}
+
+	@Override
+	public List<GameState> getSavedGameStates() {
+		Integer languageId = this.settingsPersister.getCurrentLanguageId();
+		if (languageId != null) {
+			return this.gameStatePersister.getSavedGameStates(languageId);
+		}		
+		return null;
+	}
 }
