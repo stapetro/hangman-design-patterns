@@ -44,6 +44,10 @@ public class WordMask extends Observable {
 			this.wordItem = wordItem;
 		}
 		initialize();
+		
+		//notify observers
+		setChanged();
+		notifyObservers();
 	}
 
 	public WordItem getWordItem() {

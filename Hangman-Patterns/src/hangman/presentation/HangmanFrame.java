@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,7 +24,7 @@ public class HangmanFrame extends JFrame {
 
 	private static final String HANGMAN_STR = "hangman";
 	private static final String GAME_STR = "game";
-	private static final String NEW_GAME_STR = "newGame";
+	private static final String NEW_GAME_STR = "newGame"; // @jve:decl-index=0:
 	private static final String SAVE_GAME_STR = "saveGame";
 	private static final String EXIT_STR = "exit";
 	private static final String GAME_OPTIONS_STR = "gameOptions";
@@ -33,7 +34,7 @@ public class HangmanFrame extends JFrame {
 	/**
 	 * Resource Bundle object for internationalization
 	 */
-	private ResourceBundle resourceBundle;
+	private ResourceBundle resourceBundle; // @jve:decl-index=0:
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -53,7 +54,7 @@ public class HangmanFrame extends JFrame {
 	/**
 	 * Object for working with the work mask
 	 */
-	private WordMask wordMask;
+	private WordMask wordMask; // @jve:decl-index=0:
 
 	/**
 	 * This is the default constructor
@@ -78,8 +79,18 @@ public class HangmanFrame extends JFrame {
 		this.setContentPane(getJContentPane());
 		this.setTitle(resourceBundle.getString(HANGMAN_STR));
 
-		wordMask = getWordMask();
-		wordsPanel = new WordPanel(wordMask);
+		wordMask = initializeWordMask();
+		initializeWordPanel(wordMask);
+	}
+
+	/**
+	 * initialize the wordPanel
+	 * 
+	 * @param wordMaskObj
+	 *            the WordMask object the the panel will be working with
+	 */
+	private void initializeWordPanel(WordMask wordMaskObj) {
+		wordsPanel = new WordPanel(wordMaskObj);
 		jContentPane.add(wordsPanel, BorderLayout.SOUTH);
 	}
 
@@ -106,10 +117,13 @@ public class HangmanFrame extends JFrame {
 	 * 
 	 * @return the word mask
 	 */
-	private WordMask getWordMask() {
+	private WordMask initializeWordMask() {
+		WordItem word = WordGenerator.getRandomWordItem();
+		;
 		if (wordMask == null) {
-			WordItem word = WordGenerator.getRandomWordItem();
 			wordMask = new WordMask(word);
+		} else {
+			wordMask.setWordItem(word);
 		}
 		return wordMask;
 	}
@@ -150,9 +164,11 @@ public class HangmanFrame extends JFrame {
 		if (gameMenu == null) {
 			gameMenu = new JMenu();
 			gameMenu.setText(resourceBundle.getString(GAME_STR));
-			gameMenu.add(getNewGameMenuItem());
-			gameMenu.add(getSaveGameMenuItem());
-			gameMenu.add(getExitMenuItem());
+			gameMenu.add(new NewGameAction());
+			//TODO make the other COMMAND patterns
+			// gameMenu.add(getNewGameMenuItem());
+			// gameMenu.add(getSaveGameMenuItem());
+			// gameMenu.add(getExitMenuItem());
 		}
 		return gameMenu;
 	}
@@ -245,6 +261,24 @@ public class HangmanFrame extends JFrame {
 					.getString(REVEAL_WORD_STR));
 		}
 		return revealWordMenuItem;
+	}
+
+	/**
+	 * Command for new game menu item
+	 */
+	class NewGameAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public NewGameAction() {
+			super(resourceBundle.getString(NEW_GAME_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			initializeWordMask();
+			jContentPane.remove(wordsPanel);
+			initializeWordPanel(wordMask);
+			repaint();
+		}
 	}
 
 }
