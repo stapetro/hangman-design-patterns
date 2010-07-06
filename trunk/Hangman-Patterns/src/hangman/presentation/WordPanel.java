@@ -148,7 +148,7 @@ public class WordPanel extends JPanel implements Observer {
 				if (desc == null) {
 					desc = "";
 				}
-				this.categoryWordValueLabel.setText(desc);
+				this.categoryWordValueLabel.setText(resourceBundle.getString(desc));
 			}
 		}
 	}
