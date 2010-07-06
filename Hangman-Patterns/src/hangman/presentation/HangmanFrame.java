@@ -186,39 +186,10 @@ public class HangmanFrame extends JFrame {
 		if (gameOptionsMenu == null) {
 			gameOptionsMenu = new JMenu();
 			gameOptionsMenu.setText(resourceBundle.getString(GAME_OPTIONS_STR));
+			gameOptionsMenu.add(new RevealLetterAction());
 			gameOptionsMenu.add(new RevealWordAction());
-			// gameOptionsMenu.add(getRevealNextLetterMenuItem());
-			// gameOptionsMenu.add(getRevealWordMenuItem());
 		}
 		return gameOptionsMenu;
-	}
-
-	/**
-	 * This method initializes revealNextLetterMenuItem
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getRevealNextLetterMenuItem() {
-		if (revealNextLetterMenuItem == null) {
-			revealNextLetterMenuItem = new JMenuItem();
-			revealNextLetterMenuItem.setText(resourceBundle
-					.getString(REVEAL_LETTER_STR));
-		}
-		return revealNextLetterMenuItem;
-	}
-
-	/**
-	 * This method initializes revealWordMenuItem
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getRevealWordMenuItem() {
-		if (revealWordMenuItem == null) {
-			revealWordMenuItem = new JMenuItem();
-			revealWordMenuItem.setText(resourceBundle
-					.getString(REVEAL_WORD_STR));
-		}
-		return revealWordMenuItem;
 	}
 
 	/**
@@ -280,15 +251,36 @@ public class HangmanFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * Command for reveal next letter
+	 */
+	private class RevealLetterAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public RevealLetterAction() {
+			super(resourceBundle.getString(REVEAL_LETTER_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			wordMask.revealLetter();
+			wordsPanel.update(wordMask, null);
+		}
+	}
+
+	/**
+	 * Command for levealing the whole letter
+	 */
 	private class RevealWordAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
 		public RevealWordAction() {
-			super(resourceBundle.getString(REVEAL_LETTER_STR));
+			super(resourceBundle.getString(REVEAL_WORD_STR));
 		}
-		
-		public void actionPerformed(ActionEvent e){
-			wordMask.revealLetter();
+
+		public void actionPerformed(ActionEvent e) {
+			while(wordMask.isWordRevealed() == false){
+				wordMask.revealLetter();
+			}
 			wordsPanel.update(wordMask, null);
 		}
 	}
