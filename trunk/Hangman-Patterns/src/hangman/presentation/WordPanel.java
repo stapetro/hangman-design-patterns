@@ -7,6 +7,8 @@ import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +28,7 @@ public class WordPanel extends JPanel {
 	private ResourceBundle resourceBundle;
 
 	private static final long serialVersionUID = 1L;
-	private static final Font STANDARD_FONT = new Font("Serif", Font.PLAIN, 20);
+	private static final Font STANDARD_FONT = new Font("Serif", Font.PLAIN, 14);
 	private JPanel alphabetPanel = null;
 	private JLabel categoryWordLabel = null;
 	private JLabel categoryWordValueLabel = null;
@@ -51,27 +53,53 @@ public class WordPanel extends JPanel {
 	private void initialize(WordMask wordMaskObj) {
 		resourceBundle = LanguageResourcesFactory.getLanguageResource();
 		this.wordMask = wordMaskObj;
-
-		secretWordLabel = new JLabel();
-		secretWordLabel.setFont(STANDARD_FONT);
-		this.setSize(300, 200);
-		this.setLayout(new BorderLayout());
-		this.add(getAlphabetPanel(), BorderLayout.SOUTH);
-		this.add(secretWordLabel, BorderLayout.CENTER);
-		wordMessageLabel = new JLabel();
+		
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		
+		this.setLayout(gridBagLayout);
+		this.setSize(100, 200);
 		this.categoryWordLabel = new JLabel();
-		this.categoryWordLabel.setFont(STANDARD_FONT);
-		this.categoryWordValueLabel = new JLabel();
-		this.categoryWordValueLabel.setFont(STANDARD_FONT);
-		this.add(categoryWordLabel, BorderLayout.NORTH);
-		this.add(categoryWordValueLabel, BorderLayout.NORTH);
-		this.add(wordMessageLabel, BorderLayout.WEST);
-		wordMessageLabel.setText(resourceBundle.getString(CURRENT_WORD_MSG)
-				+ " : ");
-		wordMessageLabel.setFont(STANDARD_FONT);
+		categoryWordLabel.setFont(STANDARD_FONT);
 		this.categoryWordLabel.setText(resourceBundle
 				.getString(CURRENT_CATEGORY_MSG)
 				+ " : ");
+		
+		this.categoryWordValueLabel = new JLabel();
+		this.categoryWordValueLabel.setFont(STANDARD_FONT);
+		
+		this.secretWordLabel = new JLabel();
+		this.secretWordLabel.setFont(STANDARD_FONT);
+		
+		this.wordMessageLabel = new JLabel();
+		wordMessageLabel.setFont(STANDARD_FONT);
+		wordMessageLabel.setText(resourceBundle.getString(CURRENT_WORD_MSG)
+				+ " : ");
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(categoryWordLabel, c);
+		c.fill = GridBagConstraints.HORIZONTAL;	
+		c.gridx = 1;
+		c.gridy = 0;		
+		this.add(categoryWordValueLabel, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+//		c.weightx = 0.1;
+		c.gridx = 0;
+		c.gridy = 1;
+		this.add(wordMessageLabel, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+//		c.weightx = 0.1;
+		c.gridx = 1;
+		c.gridy = 1;
+		this.add(secretWordLabel, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridwidth = 2;
+		c.gridx = 0;
+		c.gridy = 2;
+		this.add(getAlphabetPanel(), c);
 		setCategoryValueLabel();
 		refreshMaskedWord();
 		populateAlphabetLetters(alphabetPanel);
@@ -118,7 +146,6 @@ public class WordPanel extends JPanel {
 				if (desc == null) {
 					desc = "";
 				}
-				System.out.println(desc);
 				this.categoryWordValueLabel.setText(desc);
 			}
 		}
