@@ -43,16 +43,16 @@ public class PersistenceFacade implements IPersistenceFacade {
 		this.categoryParser = ConfigurationItemParrserFactory
 				.newConfigurationItemParser(this.configurationParser,
 						CategoryItemProperty.ID);
-		
+
 		String settingsXmlFilePath = this.configurationParser
-		.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SETTINGS);
+				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SETTINGS);
 		this.settingsPersister = new SettingsPersister(settingsXmlFilePath);
-		
+
 		String wordXmlFilePath = this.configurationParser
-		.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_WORDS);
+				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_WORDS);
 		this.wordParser = new WordParser(wordXmlFilePath,
 				this.langConfigParser, this.categoryParser);
-		
+
 		String scoreBoardXmlFilePath = this.configurationParser
 				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
 		this.scoreBoardPersister = new ScoreBoardPersister(
@@ -212,7 +212,27 @@ public class PersistenceFacade implements IPersistenceFacade {
 		Integer languageId = this.settingsPersister.getCurrentLanguageId();
 		if (languageId != null) {
 			return this.gameStatePersister.getSavedGameStates(languageId);
-		}		
+		}
 		return null;
+	}
+
+	@Override
+	public LevelItem setCurrentLevelFromWordSize(int wordSize) {
+		List<ConfigurationItem> levels = getLevels();
+		if (levels != null && levels.size() > 0) {
+			LevelItem currentLevel = null;
+			for (ConfigurationItem configItem : levels) {
+				if (configItem instanceof LevelItem) {
+					currentLevel = (LevelItem) configItem;
+					int minWordSize = currentLevel.getMinWordLength();
+					int maxWordSize = currentLevel.getMaxWordLength();
+					if (wordSize >= minWordSize && wordSize <= maxWordSize) {
+						setCurrentLevel(currentLevel.getId());
+						return currentLevel;
+					}
+				}
+			}
+		}
+		return getCurrentLevel();
 	}
 }

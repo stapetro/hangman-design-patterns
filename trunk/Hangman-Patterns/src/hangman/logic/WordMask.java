@@ -2,6 +2,7 @@ package hangman.logic;
 
 import hangman.constants.HangmanConstants;
 import hangman.domain.WordItem;
+import hangman.domain.config.LevelItem;
 import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class WordMask extends Observable {
 	private String maskedWord;
 	private StringBuilder usedLetters;
 	private int totalMistakes;
+	private final int maxNumberOfMistakes;
 
 	/**
 	 * True - visible letter, false - otherwise.
@@ -31,6 +33,13 @@ public class WordMask extends Observable {
 	private char lastRevealedLetter;
 
 	public WordMask(WordItem wordItem) {
+		LevelItem currentLevel = PersistenceFacadeSingleton.getInstance()
+				.getCurrentLevel();
+		if (currentLevel != null) {
+			this.maxNumberOfMistakes = currentLevel.getTotalMistakes();
+		} else {
+			this.maxNumberOfMistakes = Integer.MAX_VALUE;
+		}
 		setWordItem(wordItem);
 	}
 
@@ -44,8 +53,8 @@ public class WordMask extends Observable {
 			this.wordItem = wordItem;
 		}
 		initialize();
-		
-		//notify observers
+
+		// notify observers
 		setChanged();
 		notifyObservers();
 	}
@@ -91,8 +100,6 @@ public class WordMask extends Observable {
 	public boolean revealLetter() {
 		char letterToReveal = getNextLetterToReveal();
 		if (letterToReveal != HangmanConstants.MASK_SYMBOL) {
-			//TODO verify we really need it
-			notifyObservers();
 			return revealLetter(letterToReveal);
 		}
 		return false;
@@ -104,6 +111,13 @@ public class WordMask extends Observable {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean isHung() {
+		if(this.totalMistakes > this.maxNumberOfMistakes) {
+			return true;
+		}
+		return false;
 	}
 
 	public HangmanMemento saveToMemento() {
@@ -152,9 +166,9 @@ public class WordMask extends Observable {
 		String originalWord = this.wordItem.getContent();
 		for (int index = 0; index < mask.length; index++) {
 			char currentLetter = originalWord.charAt(index);
-			if(Character.isLetter(currentLetter) == false) {
+			if (Character.isLetter(currentLetter) == false) {
 				this.mask[index] = true;
-			}			
+			}
 			if (this.mask[index] == true) {
 				this.maskedWord += originalWord.charAt(index);
 			} else {
