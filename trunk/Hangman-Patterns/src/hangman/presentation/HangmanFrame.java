@@ -11,7 +11,6 @@ import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
@@ -31,7 +30,7 @@ public class HangmanFrame extends JFrame {
 	private static final String GAME_STR = "game";
 	private static final String NEW_GAME_STR = "newGame"; // @jve:decl-index=0:
 	private static final String SAVE_GAME_STR = "saveGame";
-	private static final String EXIT_STR = "exit";
+	private static final String EXIT_STR = "exit"; // @jve:decl-index=0:
 	private static final String GAME_OPTIONS_STR = "gameOptions";
 	private static final String REVEAL_LETTER_STR = "revealLetter";
 	private static final String REVEAL_WORD_STR = "revealWord";
@@ -172,59 +171,9 @@ public class HangmanFrame extends JFrame {
 			gameMenu.setText(resourceBundle.getString(GAME_STR));
 			gameMenu.add(new NewGameAction());
 			gameMenu.add(new SaveGameAction());
-			// TODO make the other COMMAND patterns
-			// gameMenu.add(getNewGameMenuItem());
-			// gameMenu.add(getSaveGameMenuItem());
-			// gameMenu.add(getExitMenuItem());
+			gameMenu.add(new ExitGameAction());
 		}
 		return gameMenu;
-	}
-
-	/**
-	 * This method initializes newGameMenuItem
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getNewGameMenuItem() {
-		if (newGameMenuItem == null) {
-			newGameMenuItem = new JMenuItem();
-			newGameMenuItem.setText(resourceBundle.getString(NEW_GAME_STR));
-		}
-		return newGameMenuItem;
-	}
-
-	/**
-	 * This method initializes saveGameMenuItem
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getSaveGameMenuItem() {
-		if (saveGameMenuItem == null) {
-			saveGameMenuItem = new JMenuItem();
-			saveGameMenuItem.setText(resourceBundle.getString(SAVE_GAME_STR));
-		}
-		return saveGameMenuItem;
-	}
-
-	/**
-	 * This method initializes exitMenuItem
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getExitMenuItem() {
-		if (exitMenuItem == null) {
-			exitMenuItem = new JMenuItem();
-			exitMenuItem.setText(resourceBundle.getString(EXIT_STR));
-		}
-		this.exitMenuItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-
-			}
-		});
-		return exitMenuItem;
 	}
 
 	/**
@@ -306,12 +255,26 @@ public class HangmanFrame extends JFrame {
 			String hintMessage = resourceBundle
 					.getString(ENTER_GAME_DESCRIPTION_MSG);
 			String description = JOptionPane.showInputDialog(hintMessage);
-			
+
 			if (description != null && description.trim().length() > 0) {
-				GameState gameState = new GameState(savedGameState,description);
+				GameState gameState = new GameState(savedGameState, description);
 				facade.saveGameState(gameState);
 			}
 		}
 	}
 
+	/**
+	 * Command for exit game action
+	 */
+	private class ExitGameAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public ExitGameAction() {
+			super(resourceBundle.getString(EXIT_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			System.exit(NORMAL);
+		}
+	}
 }
