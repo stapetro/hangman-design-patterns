@@ -3,15 +3,15 @@ package hangman.domain;
 import java.util.HashMap;
 
 import hangman.constants.GameStateItemProperty;
-import hangman.logic.WordMask.Memento;
+import hangman.logic.WordMask.HangmanMemento;
 import hangman.utils.ObjectSerializerUtility;
 
 public class GameState {
 
-	private Memento gameStateMemento;
+	private HangmanMemento gameStateMemento;
 	private String description;
 
-	public GameState(Memento gameStateMemento, String desc) {
+	public GameState(HangmanMemento gameStateMemento, String desc) {
 		this.gameStateMemento = gameStateMemento;
 		this.description = desc;
 	}
@@ -30,11 +30,11 @@ public class GameState {
 		}
 	}
 
-	public Memento getGameStateMemento() {
+	public HangmanMemento getGameStateMemento() {
 		return gameStateMemento;
 	}
 
-	public void setGameStateMemento(Memento gameStateMemento) {
+	public void setGameStateMemento(HangmanMemento gameStateMemento) {
 		this.gameStateMemento = gameStateMemento;
 	}
 
@@ -58,7 +58,7 @@ public class GameState {
 			this.description = propValue;
 			break;
 		case CONTENT:
-			this.gameStateMemento = (Memento) ObjectSerializerUtility
+			this.gameStateMemento = (HangmanMemento) ObjectSerializerUtility
 					.deserializeObject(propValue);
 			break;
 		}

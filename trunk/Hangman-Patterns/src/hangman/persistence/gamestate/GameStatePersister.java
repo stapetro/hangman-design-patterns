@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 import hangman.constants.GameStateItemProperty;
 import hangman.constants.HangmanConstants;
 import hangman.domain.GameState;
-import hangman.logic.WordMask.Memento;
+import hangman.logic.WordMask.HangmanMemento;
 import hangman.logic.xml.XmlManager;
 import hangman.utils.ConfigurationUtility;
 import hangman.utils.ObjectSerializerUtility;
@@ -30,7 +30,7 @@ public class GameStatePersister {
 			attributes.put(GameStateItemProperty.LANGUAGE_ID.toString(), String
 					.valueOf(languageId));
 			HashMap<String, String> properties = new HashMap<String, String>();
-			Memento gameStateMemento = gameState.getGameStateMemento();
+			HangmanMemento gameStateMemento = gameState.getGameStateMemento();
 			String serializedContent = ObjectSerializerUtility
 					.serializeOject(gameStateMemento);			
 			String encodedSerializedContent = Base64Coder.encodeString(serializedContent);

@@ -6,7 +6,6 @@ import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
-import hangman.logic.WordMask.Memento;
 
 import java.util.List;
 

@@ -6,7 +6,6 @@ import hangman.logic.WordGenerator;
 import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;

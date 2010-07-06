@@ -10,8 +10,6 @@ import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.domain.config.LevelItem;
-import hangman.logic.WordMask;
-import hangman.logic.WordMask.Memento;
 import hangman.persistence.config.ConfigurationItemParrserFactory;
 import hangman.persistence.config.ConfigurationParser;
 import hangman.persistence.config.IConfigurationItemParser;
@@ -19,18 +17,7 @@ import hangman.persistence.config.SettingsPersister;
 import hangman.persistence.gamestate.GameStatePersister;
 import hangman.persistence.scoreboard.ScoreBoardPersister;
 import hangman.persistence.words.WordParser;
-import hangman.utils.ObjectSerializerUtility;
 
-import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.List;
 
 //TODO methods should be implemented
@@ -56,11 +43,20 @@ public class PersistenceFacade implements IPersistenceFacade {
 		this.categoryParser = ConfigurationItemParrserFactory
 				.newConfigurationItemParser(this.configurationParser,
 						CategoryItemProperty.ID);
-		this.settingsPersister = new SettingsPersister(this.configurationParser);
-		this.wordParser = new WordParser(this.configurationParser,
+		
+		String settingsXmlFilePath = this.configurationParser
+		.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SETTINGS);
+		this.settingsPersister = new SettingsPersister(settingsXmlFilePath);
+		
+		String wordXmlFilePath = this.configurationParser
+		.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_WORDS);
+		this.wordParser = new WordParser(wordXmlFilePath,
 				this.langConfigParser, this.categoryParser);
+		
+		String scoreBoardXmlFilePath = this.configurationParser
+				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
 		this.scoreBoardPersister = new ScoreBoardPersister(
-				this.configurationParser, this.settingsPersister);
+				scoreBoardXmlFilePath, this.settingsPersister);
 
 		String gameStateXmlFilePath = this.configurationParser
 				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_GAME_STATE);

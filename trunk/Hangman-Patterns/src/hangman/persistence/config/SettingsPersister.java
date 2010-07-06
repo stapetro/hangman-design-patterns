@@ -8,13 +8,9 @@ import org.w3c.dom.NodeList;
 
 public class SettingsPersister {
 
-	private ConfigurationParser configParser;
 	private XmlManager settingsXmlManager;
 
-	public SettingsPersister(ConfigurationParser configParser) {
-		this.configParser = configParser;
-		String settingsXmlFilePath = this.configParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SETTINGS);
+	public SettingsPersister(String settingsXmlFilePath) {
 		this.settingsXmlManager = XmlManager
 				.createXmlManager(settingsXmlFilePath);
 	}
@@ -67,7 +63,6 @@ public class SettingsPersister {
 	private void setSettingsItemValue(String tagName, String value) {
 		if (this.settingsXmlManager != null) {
 			Node languageNode = this.settingsXmlManager.getNodeByName(tagName);
-			System.out.println("save...");
 			if (languageNode != null) {
 				languageNode.setTextContent(value);
 				this.settingsXmlManager.writeDocumentToXmlFile();
