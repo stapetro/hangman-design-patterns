@@ -6,6 +6,8 @@ import hangman.logic.WordGenerator;
 import hangman.logic.WordMask;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
@@ -191,6 +193,14 @@ public class HangmanFrame extends JFrame {
 			exitMenuItem = new JMenuItem();
 			exitMenuItem.setText(resourceBundle.getString(EXIT_STR));
 		}
+		this.exitMenuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+
+			}
+		});
 		return exitMenuItem;
 	}
 
