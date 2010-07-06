@@ -116,6 +116,7 @@ public class HangmanFrame extends JFrame {
 	public void initializeObservers() {
 		wordMask.addObserver(consolePanel);
 		wordMask.addObserver(wordsPanel);
+		wordMask.addObserver(hangmanPanel);
 	}
 
 	/**
