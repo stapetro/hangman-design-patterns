@@ -16,7 +16,19 @@
 		<content>пиле</content>
 		<proverb>рано пиле рано пее</proverb>		
 	</word>
-	<word id="5" lang_id="2" category_id="1">	
+	<word id="5" lang_id="1" category_id="1">	
+		<content>ФМИ</content>
+		<proverb>ФМИ е най-доброто</proverb>		
+	</word>
+	<word id="6" lang_id="1" category_id="1">	
+		<content>студентски град</content>
+		<proverb>в студентски град живеем</proverb>		
+	</word>
+	<word id="7" lang_id="1" category_id="1">	
+		<content>подълга дума</content>
+		<proverb>подълга дума пословица</proverb>		
+	</word>	
+	<word id="8" lang_id="2" category_id="1">	
 		<content>sweet home</content>
 		<proverb>Shop until the cows come home</proverb>		
 	</word>	
