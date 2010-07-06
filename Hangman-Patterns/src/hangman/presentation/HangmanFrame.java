@@ -1,9 +1,13 @@
 package hangman.presentation;
 
+import hangman.domain.GameState;
 import hangman.domain.WordItem;
 import hangman.languages.LanguageResourcesFactory;
 import hangman.logic.WordGenerator;
 import hangman.logic.WordMask;
+import hangman.logic.WordMask.HangmanMemento;
+import hangman.persistence.IPersistenceFacade;
+import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -30,6 +35,7 @@ public class HangmanFrame extends JFrame {
 	private static final String GAME_OPTIONS_STR = "gameOptions";
 	private static final String REVEAL_LETTER_STR = "revealLetter";
 	private static final String REVEAL_WORD_STR = "revealWord";
+	private static final String ENTER_GAME_DESCRIPTION_MSG = "enterGameDescription"; // @jve:decl-index=0:
 
 	/**
 	 * Resource Bundle object for internationalization
@@ -165,7 +171,8 @@ public class HangmanFrame extends JFrame {
 			gameMenu = new JMenu();
 			gameMenu.setText(resourceBundle.getString(GAME_STR));
 			gameMenu.add(new NewGameAction());
-			//TODO make the other COMMAND patterns
+			gameMenu.add(new SaveGameAction());
+			// TODO make the other COMMAND patterns
 			// gameMenu.add(getNewGameMenuItem());
 			// gameMenu.add(getSaveGameMenuItem());
 			// gameMenu.add(getExitMenuItem());
@@ -266,7 +273,7 @@ public class HangmanFrame extends JFrame {
 	/**
 	 * Command for new game menu item
 	 */
-	class NewGameAction extends AbstractAction {
+	private class NewGameAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
 		public NewGameAction() {
@@ -277,7 +284,33 @@ public class HangmanFrame extends JFrame {
 			initializeWordMask();
 			jContentPane.remove(wordsPanel);
 			initializeWordPanel(wordMask);
-			repaint();
+			wordsPanel.updateUI();
+		}
+	}
+
+	/**
+	 * Command for save game menu item
+	 */
+	private class SaveGameAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public SaveGameAction() {
+			super(resourceBundle.getString(SAVE_GAME_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			IPersistenceFacade facade = PersistenceFacadeSingleton
+					.getInstance();
+			HangmanMemento savedGameState = wordMask.saveToMemento();
+
+			String hintMessage = resourceBundle
+					.getString(ENTER_GAME_DESCRIPTION_MSG);
+			String description = JOptionPane.showInputDialog(hintMessage);
+			
+			if (description != null && description.trim().length() > 0) {
+				GameState gameState = new GameState(savedGameState,description);
+				facade.saveGameState(gameState);
+			}
 		}
 	}
 
