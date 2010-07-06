@@ -7,4 +7,10 @@
 	<category id="2" desc="games" >
 		<name>games</name>	
 	</category>
+	<category id="3" desc="games" >
+		<name>education</name>	
+	</category>	
+	<category id="4" desc="games" >
+		<name>computers</name>	
+	</category>	
 </categories>
