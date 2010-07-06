@@ -200,7 +200,7 @@ public class WordMask extends Observable {
 	}
 
 	private boolean processLetter(char letter) {
-		if (isWordRevealed() == true) {
+		if (isWordRevealed() == true || isHung() == true) {
 			return false;
 		}
 		String originalWord = this.wordItem.getContent();

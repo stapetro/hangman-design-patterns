@@ -1,18 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><scoreboards>
-	<scoreboard level_id="1">
-		<player>
-			<name>stas</name>
-			<total_mistakes>5</total_mistakes>			
-		</player>
-		<player>
-			<name>krasi</name>
-			<total_mistakes>3</total_mistakes>			
-		</player>		
-	<player><name>Kateto</name><total_mistakes>10</total_mistakes></player></scoreboard>
-	<scoreboard level_id="2">
-		<player>
-			<name>spasi</name>
-			<total_mistakes>1</total_mistakes>			
-		</player>	
-	<player><name>Kateto</name><total_mistakes>10</total_mistakes></player></scoreboard>
-</scoreboards>
+<scoreboard level_id="1"><player><name>Qnka</name><total_mistakes>0</total_mistakes></player><player><name>Stas</name><total_mistakes>0</total_mistakes></player><player><name>Qnka</name><total_mistakes>2</total_mistakes></player><player><name>Qnka</name><total_mistakes>2</total_mistakes></player><player><name>Qnka</name><total_mistakes>2</total_mistakes></player><player><name>Qnka</name><total_mistakes>2</total_mistakes></player></scoreboard></scoreboards>

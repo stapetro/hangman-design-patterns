@@ -22,6 +22,7 @@ public class ConsolePanel extends JPanel implements Observer {
 	private static final String REVEAL_LETTER_MSG = "revealLetterMsg";
 	private static final String LETTERS_MSG = "lettersMsg";
 	private static final String NO_REVEALED_LETTERS_MSG = "noRevealedLettersMsg";
+	private static final String HUNG_MSG = "hungMsg";
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane consoleScrollPane = null;
@@ -92,10 +93,12 @@ public class ConsolePanel extends JPanel implements Observer {
 			if (wordMask.isWordRevealed() == true) {
 				updateRevealedWordMessage(wordMask.getMaskedWord(), wordMask
 						.getProberb());
+			} else if (wordMask.isHung() == true) {
+				consoleTextArea.append(resourceBundle.getString(HUNG_MSG) + "\n");
 			} else {
 				int numberOfRevealedLetters = wordMask
 						.getNumberOfRevealedLetters();
-				char revealedLetter = wordMask.getLastRevealedLetter();		
+				char revealedLetter = wordMask.getLastRevealedLetter();
 				updateCurrentWordMessage(numberOfRevealedLetters,
 						revealedLetter);
 			}
@@ -118,13 +121,13 @@ public class ConsolePanel extends JPanel implements Observer {
 		}
 		currentMessage += '\n';
 		consoleTextArea.append(currentMessage);
-		repaint();
+//		repaint();
 	}
 
 	private void updateRevealedWordMessage(String revealedWord, String proverb) {
 		consoleTextArea.append(resourceBundle.getString(WORD_REVEALED_MSG)
 				+ "\n" + revealedWord + "\n");
-//		updateCurrentWordMessage(revealedWord);
+		// updateCurrentWordMessage(revealedWord);
 		consoleTextArea.append(resourceBundle.getString(PROVERB_MSG) + "\n");
 		consoleTextArea.append(proverb + "\n");
 	}
