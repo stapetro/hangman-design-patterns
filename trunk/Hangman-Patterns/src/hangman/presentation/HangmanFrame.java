@@ -2,6 +2,7 @@ package hangman.presentation;
 
 import hangman.domain.GameState;
 import hangman.domain.WordItem;
+import hangman.domain.config.ConfigurationItem;
 import hangman.languages.LanguageResourcesFactory;
 import hangman.logic.WordGenerator;
 import hangman.logic.WordMask;
@@ -11,6 +12,7 @@ import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
@@ -35,6 +37,7 @@ public class HangmanFrame extends JFrame {
 	private static final String REVEAL_LETTER_STR = "revealLetter";
 	private static final String REVEAL_WORD_STR = "revealWord";
 	private static final String ENTER_GAME_DESCRIPTION_MSG = "enterGameDescription"; // @jve:decl-index=0:
+	private static final String LANGUAGE_STR = "languageString";
 
 	/**
 	 * Resource Bundle object for internationalization
@@ -45,12 +48,8 @@ public class HangmanFrame extends JFrame {
 	private JPanel jContentPane = null;
 	private JMenuBar menu = null;
 	private JMenu gameMenu = null;
-	private JMenuItem newGameMenuItem = null;
-	private JMenuItem saveGameMenuItem = null;
-	private JMenuItem exitMenuItem = null;
 	private JMenu gameOptionsMenu = null;
-	private JMenuItem revealNextLetterMenuItem = null;
-	private JMenuItem revealWordMenuItem = null;
+	private JMenu languageMenu = null;
 
 	private HangmanPanel hangmanPanel;
 	private ConsolePanel consolePanel;
@@ -158,6 +157,7 @@ public class HangmanFrame extends JFrame {
 			menu = new JMenuBar();
 			menu.add(getGameMenu());
 			menu.add(getGameOptionsMenu());
+			menu.add(getLanguageMenu());
 		}
 		return menu;
 	}
@@ -194,6 +194,34 @@ public class HangmanFrame extends JFrame {
 	}
 
 	/**
+	 * This method initializes languageMenu
+	 * 
+	 * @return javax.swing.JMenu
+	 */
+	private JMenu getLanguageMenu() {
+		if (languageMenu == null) {
+			languageMenu = new JMenu();
+			languageMenu.setText(resourceBundle.getString(LANGUAGE_STR));
+
+			List<ConfigurationItem> languages = getAvailableLanguages();
+			for (ConfigurationItem item : languages) {
+				int languageId = item.getId();
+				String languageName = item.getDescription();
+				System.out.println(languageName);
+				languageMenu.add(new LanguageItemAction(languageId, languageName));
+			}
+		}
+		return languageMenu;
+	}
+
+	private List<ConfigurationItem> getAvailableLanguages() {
+		IPersistenceFacade facade = PersistenceFacadeSingleton.getInstance();
+		List<ConfigurationItem> configItems = facade.getLanguages();
+
+		return configItems;
+	}
+
+	/**
 	 * Command for new game menu item
 	 */
 	private class NewGameAction extends AbstractAction {
@@ -207,7 +235,7 @@ public class HangmanFrame extends JFrame {
 			initializeWordMask();
 			jContentPane.remove(wordsPanel);
 			initializeWordPanel(wordMask);
-			wordsPanel.updateUI();
+			wordsPanel.update(wordMask, null);
 		}
 	}
 
@@ -279,10 +307,39 @@ public class HangmanFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			while(wordMask.isWordRevealed() == false){
+			while (wordMask.isWordRevealed() == false) {
 				wordMask.revealLetter();
 			}
 			wordsPanel.update(wordMask, null);
+		}
+	}
+
+	private class LanguageItemAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		private int languageId;
+
+		public LanguageItemAction(int id, String language) {
+			super(language);
+			this.languageId = id;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			IPersistenceFacade facade = PersistenceFacadeSingleton.getInstance();
+			facade.setCurrentLanguage(languageId);
+			
+//			jContentPane = null;
+//			menu = null;
+//			gameMenu = null;
+//			gameOptionsMenu = null;
+//			languageMenu = null;
+//
+//			hangmanPanel = null;
+//			consolePanel = null;
+//			wordsPanel = null;
+//			wordMask = null;
+//			initialize();
+//			jContentPane.updateUI();
+//			wordsPanel.update(wordMask, null);
 		}
 	}
 }
