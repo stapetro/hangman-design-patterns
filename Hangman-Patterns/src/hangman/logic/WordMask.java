@@ -100,12 +100,12 @@ public class WordMask extends Observable {
 		}
 	}
 
-	public Memento saveToMemento() {
-		return new Memento(this.wordItem.getId(), totalMistakes, usedLetters
-				.toString());
+	public HangmanMemento saveToMemento() {
+		return new HangmanMemento(this.wordItem.getId(), totalMistakes,
+				usedLetters.toString());
 	}
 
-	public void restoreFromMemento(Memento memento) {
+	public void restoreFromMemento(HangmanMemento memento) {
 		this.wordItem = PersistenceFacadeSingleton.getInstance().getWord(
 				memento.getSavedWordId());
 		initialize();
@@ -194,8 +194,8 @@ public class WordMask extends Observable {
 		}
 	}
 
-	public static class Memento implements Serializable {
-		
+	public static class HangmanMemento implements Serializable {
+
 		/**
 		 * 
 		 */
@@ -203,7 +203,7 @@ public class WordMask extends Observable {
 		private final int wordId;
 		private final String usedLetters;
 
-		private Memento(int wordId, int mistakes, String usedLetters) {
+		private HangmanMemento(int wordId, int mistakes, String usedLetters) {
 			this.wordId = wordId;
 			this.usedLetters = usedLetters;
 		}

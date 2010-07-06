@@ -1,13 +1,11 @@
 package hangman.persistence.words;
 
-import hangman.constants.HangmanConstants;
 import hangman.constants.WordItemProperty;
 import hangman.domain.WordItem;
 import hangman.domain.config.CategoryItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.domain.config.LanguageItem;
 import hangman.logic.xml.XmlManager;
-import hangman.persistence.config.ConfigurationParser;
 import hangman.persistence.config.IConfigurationItemParser;
 import hangman.utils.ConfigurationUtility;
 
@@ -23,19 +21,15 @@ import org.w3c.dom.Node;
  */
 public class WordParser {
 
-	private ConfigurationParser configParser;
 	private XmlManager wordXmlManager;
 	private IConfigurationItemParser languageConfigParser;
 	private IConfigurationItemParser categoryParser;
 
-	public WordParser(ConfigurationParser configParser,
+	public WordParser(String wordXmlFilePath,
 			IConfigurationItemParser langConfigParser,
 			IConfigurationItemParser categoryParser) {
-		this.configParser = configParser;
 		this.languageConfigParser = langConfigParser;
 		this.categoryParser = categoryParser;
-		String wordXmlFilePath = this.configParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_WORDS);
 		this.wordXmlManager = XmlManager.createXmlManager(wordXmlFilePath);
 	}
 

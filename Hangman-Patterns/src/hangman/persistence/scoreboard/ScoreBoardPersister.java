@@ -4,7 +4,6 @@ import hangman.constants.HangmanConstants;
 import hangman.domain.Player;
 import hangman.domain.ScoreBoard;
 import hangman.logic.xml.XmlManager;
-import hangman.persistence.config.ConfigurationParser;
 import hangman.persistence.config.SettingsPersister;
 import hangman.utils.ConfigurationUtility;
 
@@ -17,15 +16,11 @@ import org.w3c.dom.NodeList;
 
 public class ScoreBoardPersister {
 
-	private ConfigurationParser configParser;
 	private XmlManager scoreBoardXmlManager;
 	private SettingsPersister settingsParser;
 
-	public ScoreBoardPersister(ConfigurationParser configParser,
+	public ScoreBoardPersister(String scoreBoardXmlFilePath,
 			SettingsPersister settingsParser) {
-		this.configParser = configParser;
-		String scoreBoardXmlFilePath = this.configParser
-				.getAttributeValue(HangmanConstants.CONFIG_ATTR_NAME_SCORE_BOARD);
 		this.scoreBoardXmlManager = XmlManager
 				.createXmlManager(scoreBoardXmlFilePath);
 		this.settingsParser = settingsParser;
