@@ -19,6 +19,9 @@ public class ConsolePanel extends JPanel implements Observer {
 	private static final String CURRENT_WORD_MSG = "currentWordMessage";
 	private static final String WORD_REVEALED_MSG = "wordRevealedMessage";
 	private static final String PROVERB_MSG = "proverbMessage";
+	private static final String REVEAL_LETTER_MSG = "revealLetterMsg";
+	private static final String LETTERS_MSG = "lettersMsg";
+	private static final String NO_REVEALED_LETTERS_MSG = "noRevealedLettersMsg";
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane consoleScrollPane = null;
@@ -48,15 +51,9 @@ public class ConsolePanel extends JPanel implements Observer {
 		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.weighty = 1.0;
 		gridBagConstraints.gridx = 0;
-		GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-		gridBagConstraints3.fill = GridBagConstraints.BOTH;
-		gridBagConstraints3.gridy = 0;
-		gridBagConstraints3.weightx = 1.0;
-		gridBagConstraints3.weighty = 1.0;
-		gridBagConstraints3.gridx = 0;
 		this.setSize(203, 258);
 		this.setLayout(new GridBagLayout());
-		this.add(getConsoleScrollPane(), gridBagConstraints3);
+		this.add(getConsoleScrollPane(), gridBagConstraints);
 	}
 
 	/**
@@ -88,31 +85,46 @@ public class ConsolePanel extends JPanel implements Observer {
 	 * Handle the update actions when the WordMask is changed
 	 */
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable wordMaskObservable, Object arg) {
 		WordMask wordMask;
-		if (o instanceof WordMask) {
-			wordMask = (WordMask) o;
+		if (wordMaskObservable instanceof WordMask) {
+			wordMask = (WordMask) wordMaskObservable;
 			if (wordMask.isWordRevealed() == true) {
 				updateRevealedWordMessage(wordMask.getMaskedWord(), wordMask
 						.getProberb());
 			} else {
-				updateCurrentWordMessage(wordMask.getMaskedWord());
+				int numberOfRevealedLetters = wordMask
+						.getNumberOfRevealedLetters();
+				char revealedLetter = wordMask.getLastRevealedLetter();		
+				updateCurrentWordMessage(numberOfRevealedLetters,
+						revealedLetter);
 			}
 		} else {
 			consoleTextArea.append(resourceBundle.getString(ERROR_MSG) + "\n");
 		}
 	}
 
-	private void updateCurrentWordMessage(String maskedWord) {
-		consoleTextArea.append(resourceBundle.getString(CURRENT_WORD_MSG)
-				+ ":\n");
-		consoleTextArea.append(maskedWord + "\n");
+	private void updateCurrentWordMessage(int numberOfRevealedLetters,
+			char revealedLetter) {
+		String currentMessage = "";
+		if (numberOfRevealedLetters > 0) {
+			currentMessage = resourceBundle.getString(REVEAL_LETTER_MSG) + " "
+					+ numberOfRevealedLetters + " "
+					+ resourceBundle.getString(LETTERS_MSG) + " '"
+					+ revealedLetter + "'";
+		} else {
+			currentMessage = resourceBundle.getString(NO_REVEALED_LETTERS_MSG)
+					+ " '" + revealedLetter + "'";
+		}
+		currentMessage += '\n';
+		consoleTextArea.append(currentMessage);
+		repaint();
 	}
 
 	private void updateRevealedWordMessage(String revealedWord, String proverb) {
 		consoleTextArea.append(resourceBundle.getString(WORD_REVEALED_MSG)
-				+ "\n");
-		updateCurrentWordMessage(revealedWord);
+				+ "\n" + revealedWord + "\n");
+//		updateCurrentWordMessage(revealedWord);
 		consoleTextArea.append(resourceBundle.getString(PROVERB_MSG) + "\n");
 		consoleTextArea.append(proverb + "\n");
 	}

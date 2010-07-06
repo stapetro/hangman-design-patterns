@@ -28,7 +28,7 @@ public class WordMask extends Observable {
 	 * Stores current revealed letters on every user step.
 	 */
 	private int numberOfrevealedLetters;
-	private Character lastRevealedLetter;
+	private char lastRevealedLetter;
 
 	public WordMask(WordItem wordItem) {
 		setWordItem(wordItem);
@@ -149,6 +149,10 @@ public class WordMask extends Observable {
 		this.maskedWord = "";
 		String originalWord = this.wordItem.getContent();
 		for (int index = 0; index < mask.length; index++) {
+			char currentLetter = originalWord.charAt(index);
+			if(Character.isLetter(currentLetter) == false) {
+				this.mask[index] = true;
+			}			
 			if (this.mask[index] == true) {
 				this.maskedWord += originalWord.charAt(index);
 			} else {
@@ -162,7 +166,7 @@ public class WordMask extends Observable {
 		this.mask = new boolean[this.wordItem.getContent().length()];
 		this.numberOfrevealedLetters = 0;
 		this.totalMistakes = 0;
-		this.lastRevealedLetter = null;
+		this.lastRevealedLetter = ' ';
 		this.usedLetters = new StringBuilder();
 		constructMaskedWord();
 	}

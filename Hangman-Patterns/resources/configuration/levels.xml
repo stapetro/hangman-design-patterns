@@ -2,17 +2,17 @@
 <levels>
 	<level id="1">
 		<name>easy</name>
-		<word_length>8</word_length>
+		<word_length>3,5</word_length>
 		<total_mistakes>6</total_mistakes>
 	</level>
 	<level id="2">
 		<name>medium</name>
-		<word_length>10</word_length>
+		<word_length>6,8</word_length>
 		<total_mistakes>4</total_mistakes>
 	</level>	
 	<level id="3">
 		<name>hard</name>
-		<word_length>14</word_length>
+		<word_length>9,15</word_length>
 		<total_mistakes>3</total_mistakes>
 	</level>		
 </levels>

@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <words>
-	<word lang_id="2" category_id="1">	
+	<word id="1" lang_id="2" category_id="1">	
 		<content>proverb</content>
 		<proverb>The Deadly Bees proverb shit</proverb>		
 	</word>
-	<word lang_id="1" category_id="1">	
+	<word id="1" lang_id="2" category_id="1">	
+		<content>top</content>
+		<proverb>Be with us on the top</proverb>		
+	</word>
+	<word id="1" lang_id="2" category_id="1">	
+		<content>yes</content>
+		<proverb>Yes, madam</proverb>		
+	</word>	
+	<word id="2" lang_id="1" category_id="1">	
 		<content>пиле</content>
 		<proverb>рано пиле рано пее</proverb>		
 	</word>
-	<word lang_id="2" category_id="1">	
-		<content>home</content>
+	<word id="3" lang_id="2" category_id="1">	
+		<content>sweet home</content>
 		<proverb>Shop until the cows come home</proverb>		
 	</word>	
 </words>
