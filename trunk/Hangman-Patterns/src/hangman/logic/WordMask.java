@@ -6,6 +6,7 @@ import hangman.domain.config.LevelItem;
 import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Observable;
 
 /**
@@ -199,8 +200,8 @@ public class WordMask extends Observable {
 	private void saveUsedLetter(char letter) {
 		this.usedLetters.append(letter);
 	}
-	
-	public String getUsedLetters(){
+
+	public String getUsedLetters() {
 		return usedLetters.toString();
 	}
 
@@ -229,6 +230,17 @@ public class WordMask extends Observable {
 			this.totalMistakes++;
 			return false;
 		}
+	}
+
+	/**
+	 * Reveal the whole word
+	 * 
+	 * @return
+	 */
+	public String revealWord() {
+		Arrays.fill(this.mask, true);
+		constructMaskedWord();
+		return this.maskedWord;
 	}
 
 	public static class HangmanMemento implements Serializable {
