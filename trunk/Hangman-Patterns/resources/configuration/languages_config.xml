@@ -2,5 +2,7 @@
 <languages>
 	<lang id="1" code="bg" country_code="BG" desc="Bulgarian" />
 	<lang id="2" code="en" country_code="US" desc="English" />
+	<!--
 	<lang id="3" code="de" country_code="DE" desc="German" />
+	-->
 </languages>
