@@ -199,6 +199,10 @@ public class WordMask extends Observable {
 	private void saveUsedLetter(char letter) {
 		this.usedLetters.append(letter);
 	}
+	
+	public String getUsedLetters(){
+		return usedLetters.toString();
+	}
 
 	private boolean processLetter(char letter) {
 		if (isWordRevealed() == true || isHung() == true) {
