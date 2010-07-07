@@ -1,7 +1,11 @@
 package hangman.presentation;
 
+import hangman.domain.Player;
+import hangman.domain.ScoreBoard;
 import hangman.languages.LanguageResourcesFactory;
 import hangman.logic.WordMask;
+import hangman.persistence.IPersistenceFacade;
+import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,13 +27,15 @@ public class ConsolePanel extends JPanel implements Observer {
 	private static final String REVEAL_LETTER_MSG = "revealLetterMsg";
 	private static final String LETTERS_MSG = "lettersMsg";
 	private static final String NO_REVEALED_LETTERS_MSG = "noRevealedLettersMsg";
-	private static final String HUNG_MSG = "hungMsg";
+	private static final String HUNG_MSG = "hungMsg"; // @jve:decl-index=0:
+	private static final String NAME_MSG = "name"; // @jve:decl-index=0:
+	private static final String UNKNOWN_MSG = "unknown";
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane consoleScrollPane = null;
 	private JTextArea consoleTextArea = null;
 
-	private ResourceBundle resourceBundle;
+	private ResourceBundle resourceBundle; // @jve:decl-index=0:
 
 	/**
 	 * This is the default constructor
@@ -90,11 +97,16 @@ public class ConsolePanel extends JPanel implements Observer {
 		WordMask wordMask;
 		if (wordMaskObservable instanceof WordMask) {
 			wordMask = (WordMask) wordMaskObservable;
+			boolean isHung = wordMask.isHung();
 			if (wordMask.isWordRevealed() == true) {
 				updateRevealedWordMessage(wordMask.getMaskedWord(), wordMask
 						.getProberb());
-			} else if (wordMask.isHung() == true) {
-				consoleTextArea.append(resourceBundle.getString(HUNG_MSG) + "\n");
+				if (isHung == false) {
+					saveUserToScoreBoard(wordMask.getTotalMistakes());
+				}
+			} else if (isHung == true) {
+				consoleTextArea.append(resourceBundle.getString(HUNG_MSG)
+						+ "\n");
 			} else {
 				int numberOfRevealedLetters = wordMask
 						.getNumberOfRevealedLetters();
@@ -121,7 +133,7 @@ public class ConsolePanel extends JPanel implements Observer {
 		}
 		currentMessage += '\n';
 		consoleTextArea.append(currentMessage);
-//		repaint();
+		// repaint();
 	}
 
 	private void updateRevealedWordMessage(String revealedWord, String proverb) {
@@ -130,5 +142,18 @@ public class ConsolePanel extends JPanel implements Observer {
 		// updateCurrentWordMessage(revealedWord);
 		consoleTextArea.append(resourceBundle.getString(PROVERB_MSG) + "\n");
 		consoleTextArea.append(proverb + "\n");
+	}
+
+	private void saveUserToScoreBoard(int totalMistakes) {
+		String userName = JOptionPane.showInputDialog(resourceBundle
+				.getString(NAME_MSG));
+		if (userName == null || userName.trim().length() < 1) {
+			userName = resourceBundle.getString(UNKNOWN_MSG);
+		}
+		Player player = new Player(userName, totalMistakes);
+		IPersistenceFacade facade = PersistenceFacadeSingleton.getInstance();
+		ScoreBoard scoreBoard = facade.getCurrentScoreBoard();
+		scoreBoard.addPlayer(player);
+		scoreBoard.save();
 	}
 }
