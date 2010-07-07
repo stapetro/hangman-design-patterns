@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <words>
 	<word id="1" lang_id="2" category_id="1">	
-		<content>proverb</content>
-		<proverb>The Deadly Bees proverb shit</proverb>		
+		<content>java</content>
+		<proverb>java rules the web</proverb>		
 	</word>
 	<word id="2" lang_id="2" category_id="1">	
 		<content>top</content>
 		<proverb>Be with us on the top</proverb>		
 	</word>
 	<word id="3" lang_id="2" category_id="1">	
-		<content>yes</content>
-		<proverb>Yes, madam</proverb>		
+		<content>cats</content>
+		<proverb>it's raining dogs and cats</proverb>		
 	</word>	
 	<word id="4" lang_id="1" category_id="1">	
 		<content>пиле</content>
 		<proverb>рано пиле рано пее</proverb>		
 	</word>
 	<word id="5" lang_id="1" category_id="3">	
-		<content>ФМИ</content>
-		<proverb>ФМИ е най-доброто</proverb>		
+		<content>фми</content>
+		<proverb>фми е най-доброто</proverb>		
 	</word>
 	<word id="6" lang_id="1" category_id="3">	
 		<content>студентски град</content>
@@ -32,4 +32,16 @@
 		<content>sweet home</content>
 		<proverb>Shop until the cows come home</proverb>		
 	</word>	
+	<word id="9" lang_id="2" category_id="4">	
+		<content>computer</content>
+		<proverb>computers are everywhere</proverb>		
+	</word>	
+	<word id="10" lang_id="1" category_id="3">	
+		<content>работа</content>
+		<proverb>не оставяй днешната работа за утре</proverb>		
+	</word>
+	<word id="10" lang_id="1" category_id="4">	
+		<content>шаблон</content>
+		<proverb>софтуерни шаблони за дизайн</proverb>		
+	</word>		
 </words>
