@@ -132,7 +132,6 @@ public class LoadGameFrame extends JFrame {
 			wordMask.restoreFromMemento(memento);
 			dispose();
 		}
-
 	}
 
 }

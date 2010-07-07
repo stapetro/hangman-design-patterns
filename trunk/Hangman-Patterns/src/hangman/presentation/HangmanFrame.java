@@ -1,6 +1,7 @@
 package hangman.presentation;
 
 import hangman.domain.GameState;
+import hangman.domain.ScoreBoard;
 import hangman.domain.WordItem;
 import hangman.domain.config.ConfigurationItem;
 import hangman.languages.LanguageResourcesFactory;
@@ -38,6 +39,7 @@ public class HangmanFrame extends JFrame {
 	private static final String REVEAL_WORD_STR = "revealWord";
 	private static final String ENTER_GAME_DESCRIPTION_MSG = "enterGameDescription"; // @jve:decl-index=0:
 	private static final String LANGUAGE_STR = "languageString";
+	private static final String SCOREBOARD_STR = "scoreboard";
 
 	/**
 	 * Resource Bundle object for internationalization
@@ -189,6 +191,7 @@ public class HangmanFrame extends JFrame {
 			gameOptionsMenu.setText(resourceBundle.getString(GAME_OPTIONS_STR));
 			gameOptionsMenu.add(new RevealLetterAction());
 			gameOptionsMenu.add(new RevealWordAction());
+			gameOptionsMenu.add(new ScoreBoardItemAction());
 		}
 		return gameOptionsMenu;
 	}
@@ -279,8 +282,9 @@ public class HangmanFrame extends JFrame {
 			IPersistenceFacade facade = PersistenceFacadeSingleton
 					.getInstance();
 			List<GameState> gameStatesList = facade.getSavedGameStates();
-			LoadGameFrame loadFrame = new LoadGameFrame(gameStatesList, wordMask);
-			loadFrame.setSize(400,400);
+			LoadGameFrame loadFrame = new LoadGameFrame(gameStatesList,
+					wordMask);
+			loadFrame.setSize(400, 400);
 			loadFrame.setVisible(true);
 		}
 	}
@@ -331,6 +335,23 @@ public class HangmanFrame extends JFrame {
 				wordMask.revealLetter();
 			}
 			wordsPanel.update(wordMask, null);
+		}
+	}
+
+	private class ScoreBoardItemAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public ScoreBoardItemAction() {
+			super(resourceBundle.getString(SCOREBOARD_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			IPersistenceFacade facade = PersistenceFacadeSingleton
+					.getInstance();
+			ScoreBoard scoreBoard = facade.getCurrentScoreBoard();
+			String stringScoreboard = (scoreBoard == null) ? "" : scoreBoard
+					.toString();
+			JOptionPane.showMessageDialog(null, stringScoreboard);
 		}
 	}
 

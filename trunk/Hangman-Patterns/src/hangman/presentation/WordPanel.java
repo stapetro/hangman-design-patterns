@@ -21,12 +21,12 @@ import javax.swing.JPanel;
 
 public class WordPanel extends JPanel implements Observer {
 
-	private static final String ALPHABET_STR = "alphabet";
+	private static final String ALPHABET_STR = "alphabet";  //  @jve:decl-index=0:
 	private static final String CURRENT_WORD_MSG = "currentWordMessage";
 	private static final String CURRENT_CATEGORY_MSG = "currentCategoryMessage";
 	private static final String COMMA = ",";
 
-	private ResourceBundle resourceBundle;
+	private ResourceBundle resourceBundle;  //  @jve:decl-index=0:
 
 	private static final long serialVersionUID = 1L;
 	private static final Font STANDARD_FONT = new Font("Serif", Font.PLAIN, 14);
@@ -37,6 +37,7 @@ public class WordPanel extends JPanel implements Observer {
 	private JLabel wordMessageLabel = null;
 
 	private WordMask wordMask; // @jve:decl-index=0:
+	private JButton[] alphabetButtons;
 
 	/**
 	 * This is the default constructor
@@ -104,14 +105,17 @@ public class WordPanel extends JPanel implements Observer {
 		setCategoryValueLabel();
 		refreshMaskedWord();
 		populateAlphabetLetters(alphabetPanel);
+		disableUsedLetters();
 	}
 
 	private void populateAlphabetLetters(JPanel alphabetPnl) {
 		String alphabet = resourceBundle.getString(ALPHABET_STR);
 		String[] alphabetChars = alphabet.split(COMMA);
+		alphabetButtons = new JButton[alphabetChars.length];
 
 		for (int i = 0; i < alphabetChars.length; i++) {
 			JButton letterBtn = new JButton(alphabetChars[i]);
+			alphabetButtons[i] = letterBtn;
 			LetterButtonHangler letterBtnHangler = new LetterButtonHangler();
 			letterBtn.addActionListener(letterBtnHangler);
 			alphabetPnl.add(letterBtn);
@@ -123,7 +127,7 @@ public class WordPanel extends JPanel implements Observer {
 	 */
 	private void refreshMaskedWord() {
 		secretWordLabel.setText(wordMask.getMaskedWord());
-//		updateUI();
+		// updateUI();
 	}
 
 	/**
@@ -148,8 +152,27 @@ public class WordPanel extends JPanel implements Observer {
 				if (desc == null) {
 					desc = "";
 				}
-				this.categoryWordValueLabel.setText(resourceBundle.getString(desc));
+				this.categoryWordValueLabel.setText(resourceBundle
+						.getString(desc));
 			}
+		}
+	}
+
+	/**
+	 * Mark used letter buttons as disabled
+	 */
+	private void disableUsedLetters() {
+		String usedLetters = wordMask.getUsedLetters();
+
+		for (int i = 0 ; i < alphabetButtons.length; i++) {
+			JButton btn = alphabetButtons[i];
+			String btnLetter = btn.getText();
+			if(usedLetters.contains(btnLetter)){
+				btn.setEnabled(false);
+			} else{
+				btn.setEnabled(true);
+			}
+			System.out.print(btn.isEnabled() + " " + btn.getText() + " -- ");
 		}
 	}
 
@@ -171,6 +194,7 @@ public class WordPanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable wordMaskObservable, Object arg) {
 		refreshMaskedWord();
+		disableUsedLetters();
 	}
 
 }
