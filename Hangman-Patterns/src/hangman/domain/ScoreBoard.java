@@ -1,11 +1,13 @@
 package hangman.domain;
 
+import hangman.languages.LanguageResourcesFactory;
 import hangman.persistence.IPersistenceFacade;
 import hangman.persistence.PersistenceFacadeSingleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Represents score board for hangman game. Stores sorted players in ascending
@@ -15,6 +17,8 @@ import java.util.List;
  * 
  */
 public class ScoreBoard {
+	private static final String SCOREBOARD_MSG = "scoreboard";
+	private static final String MISTAKES_MSG = "mistakesMsg";
 
 	private int size;
 	private List<Player> topPlayers;
@@ -28,7 +32,7 @@ public class ScoreBoard {
 		this.size = this.persistenceFacade.getCurrentScoreBoardSize();
 		this.topPlayers = new ArrayList<Player>(this.size + 1);
 	}
-	
+
 	public List<Player> getTopPlayers() {
 		return new ArrayList<Player>(this.topPlayers);
 	}
@@ -55,10 +59,10 @@ public class ScoreBoard {
 		if (canAddPlayer == true) {
 			Player newPlayer = new Player(player);
 			this.topPlayers.add(newPlayer);
-			sortPlayers();			
+			sortPlayers();
 		}
 	}
-	
+
 	/**
 	 * Save score board to persistence
 	 */
@@ -68,25 +72,30 @@ public class ScoreBoard {
 
 	@Override
 	public String toString() {
-		String output = "Scoreboard:\n";
+		ResourceBundle resourceBundle = LanguageResourcesFactory
+				.getLanguageResource();
+		String output = resourceBundle.getString(SCOREBOARD_MSG) + "\n";
 		Player currentPlayer = null;
 		int size = topPlayers.size();
 		Integer currentNumberOfMistakes = 0;
 		for (int index = 0; index < size; index++) {
 			currentPlayer = topPlayers.get(index);
 			currentNumberOfMistakes = currentPlayer.getTotalMistakes();
-			output += (currentPlayer.getName() + " ---> "
-					+ currentNumberOfMistakes + " mistake");
 			if (currentNumberOfMistakes != null) {
-				output += ((currentNumberOfMistakes == 1) ? "" : "s");
+				output += (currentPlayer.getName() + " ---> "
+						+ currentNumberOfMistakes + " " + resourceBundle
+						.getString(MISTAKES_MSG));
+				// if (currentNumberOfMistakes != null) {
+				// output += ((currentNumberOfMistakes == 1) ? "" : "s");
+				// }
+				output += "\n";
 			}
-			output += "\n";
 		}
 		return output;
 	}
 
 	private void sortPlayers() {
 		Collections.sort(topPlayers);
-	}	
+	}
 
 }
