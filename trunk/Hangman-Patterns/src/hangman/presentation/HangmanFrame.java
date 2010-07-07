@@ -19,7 +19,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -32,6 +31,7 @@ public class HangmanFrame extends JFrame {
 	private static final String GAME_STR = "game";
 	private static final String NEW_GAME_STR = "newGame"; // @jve:decl-index=0:
 	private static final String SAVE_GAME_STR = "saveGame";
+	private static final String LOAD_GAME_STR = "loadGame"; // @jve:decl-index=0:
 	private static final String EXIT_STR = "exit"; // @jve:decl-index=0:
 	private static final String GAME_OPTIONS_STR = "gameOptions";
 	private static final String REVEAL_LETTER_STR = "revealLetter";
@@ -172,6 +172,7 @@ public class HangmanFrame extends JFrame {
 			gameMenu.setText(resourceBundle.getString(GAME_STR));
 			gameMenu.add(new NewGameAction());
 			gameMenu.add(new SaveGameAction());
+			gameMenu.add(new LoadGameAction());
 			gameMenu.add(new ExitGameAction());
 		}
 		return gameMenu;
@@ -206,8 +207,8 @@ public class HangmanFrame extends JFrame {
 			for (ConfigurationItem item : languages) {
 				int languageId = item.getId();
 				String languageName = item.getDescription();
-				System.out.println(languageName);
-				languageMenu.add(new LanguageItemAction(languageId, languageName));
+				languageMenu.add(new LanguageItemAction(languageId,
+						languageName));
 			}
 		}
 		return languageMenu;
@@ -261,6 +262,26 @@ public class HangmanFrame extends JFrame {
 				GameState gameState = new GameState(savedGameState, description);
 				facade.saveGameState(gameState);
 			}
+		}
+	}
+
+	/**
+	 * Command for loading game
+	 */
+	private class LoadGameAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public LoadGameAction() {
+			super(resourceBundle.getString(LOAD_GAME_STR));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			IPersistenceFacade facade = PersistenceFacadeSingleton
+					.getInstance();
+			List<GameState> gameStatesList = facade.getSavedGameStates();
+			LoadGameFrame loadFrame = new LoadGameFrame(gameStatesList, wordMask);
+			loadFrame.setSize(400,400);
+			loadFrame.setVisible(true);
 		}
 	}
 
@@ -323,22 +344,23 @@ public class HangmanFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			IPersistenceFacade facade = PersistenceFacadeSingleton.getInstance();
+			IPersistenceFacade facade = PersistenceFacadeSingleton
+					.getInstance();
 			facade.setCurrentLanguage(languageId);
-			
-//			jContentPane = null;
-//			menu = null;
-//			gameMenu = null;
-//			gameOptionsMenu = null;
-//			languageMenu = null;
-//
-//			hangmanPanel = null;
-//			consolePanel = null;
-//			wordsPanel = null;
-//			wordMask = null;
-//			initialize();
-//			jContentPane.updateUI();
-//			wordsPanel.update(wordMask, null);
+
+			// jContentPane = null;
+			// menu = null;
+			// gameMenu = null;
+			// gameOptionsMenu = null;
+			// languageMenu = null;
+			//
+			// hangmanPanel = null;
+			// consolePanel = null;
+			// wordsPanel = null;
+			// wordMask = null;
+			// initialize();
+			// jContentPane.updateUI();
+			// wordsPanel.update(wordMask, null);
 		}
 	}
 }
