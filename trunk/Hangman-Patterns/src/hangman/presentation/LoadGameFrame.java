@@ -127,10 +127,12 @@ public class LoadGameFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int selectedIndex = savedGamesList.getSelectedIndex();
-			GameState gameState = gameStatesList.get(selectedIndex);
-			HangmanMemento memento = gameState.getGameStateMemento();
-			wordMask.restoreFromMemento(memento);
-			dispose();
+			if (selectedIndex >= 0) {
+				GameState gameState = gameStatesList.get(selectedIndex);
+				HangmanMemento memento = gameState.getGameStateMemento();
+				wordMask.restoreFromMemento(memento);
+				dispose();
+			}
 		}
 	}
 

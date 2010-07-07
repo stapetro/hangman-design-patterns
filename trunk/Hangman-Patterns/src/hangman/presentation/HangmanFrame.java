@@ -236,8 +236,9 @@ public class HangmanFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			initializeWordMask();
-			jContentPane.remove(wordsPanel);
-			initializeWordPanel(wordMask);
+//			jContentPane.remove(wordsPanel);
+//			initializeWordPanel(wordMask);
+			wordsPanel = new WordPanel(wordMask);
 			wordsPanel.update(wordMask, null);
 		}
 	}

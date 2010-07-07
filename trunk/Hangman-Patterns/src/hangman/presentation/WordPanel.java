@@ -21,12 +21,12 @@ import javax.swing.JPanel;
 
 public class WordPanel extends JPanel implements Observer {
 
-	private static final String ALPHABET_STR = "alphabet";  //  @jve:decl-index=0:
+	private static final String ALPHABET_STR = "alphabet"; // @jve:decl-index=0:
 	private static final String CURRENT_WORD_MSG = "currentWordMessage";
 	private static final String CURRENT_CATEGORY_MSG = "currentCategoryMessage";
 	private static final String COMMA = ",";
 
-	private ResourceBundle resourceBundle;  //  @jve:decl-index=0:
+	private ResourceBundle resourceBundle; // @jve:decl-index=0:
 
 	private static final long serialVersionUID = 1L;
 	private static final Font STANDARD_FONT = new Font("Serif", Font.PLAIN, 14);
@@ -164,15 +164,13 @@ public class WordPanel extends JPanel implements Observer {
 	private void disableUsedLetters() {
 		String usedLetters = wordMask.getUsedLetters();
 
-		for (int i = 0 ; i < alphabetButtons.length; i++) {
-			JButton btn = alphabetButtons[i];
-			String btnLetter = btn.getText();
-			if(usedLetters.contains(btnLetter)){
-				btn.setEnabled(false);
-			} else{
-				btn.setEnabled(true);
+		for (int i = 0; i < alphabetButtons.length; i++) {
+			String btnLetter = alphabetButtons[i].getText();
+			if (usedLetters.contains(btnLetter)) {
+				alphabetButtons[i].setEnabled(false);
+			} else {
+				alphabetButtons[i].setEnabled(true);
 			}
-			System.out.print(btn.isEnabled() + " " + btn.getText() + " -- ");
 		}
 	}
 
@@ -195,6 +193,11 @@ public class WordPanel extends JPanel implements Observer {
 	public void update(Observable wordMaskObservable, Object arg) {
 		refreshMaskedWord();
 		disableUsedLetters();
+
+		if (wordMask.isHung() == true) {
+			String revealedWord = wordMask.revealWord();
+			refreshMaskedWord();
+		}
 	}
 
 }
