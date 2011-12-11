@@ -370,19 +370,21 @@ public class HangmanFrame extends JFrame {
 					.getInstance();
 			facade.setCurrentLanguage(languageId);
 
-			// jContentPane = null;
-			// menu = null;
-			// gameMenu = null;
-			// gameOptionsMenu = null;
-			// languageMenu = null;
-			//
-			// hangmanPanel = null;
-			// consolePanel = null;
-			// wordsPanel = null;
-			// wordMask = null;
-			// initialize();
-			// jContentPane.updateUI();
-			// wordsPanel.update(wordMask, null);
+			 jContentPane = null;
+			 menu = null;
+			 gameMenu = null;
+			 gameOptionsMenu = null;
+			 languageMenu = null;
+			
+			 hangmanPanel = null;
+			 consolePanel = null;
+			 wordsPanel = null;
+			 wordMask = null;
+			 initialize();
+			 initializeComponents();
+			 initializeObservers();
+			 jContentPane.updateUI();
+			 wordsPanel.update(wordMask, null);
 		}
 	}
 }
