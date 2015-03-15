@@ -1,0 +1,1 @@
+Desktop application which realizes hangman game. Supports score board with the best players' scores.
