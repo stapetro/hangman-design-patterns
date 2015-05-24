@@ -5,62 +5,37 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 
 public class ObjectSerializerUtility {
 
-	public static String serializeOject(Object object) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream objectOutputStream = null;
-		try {
-			objectOutputStream = new ObjectOutputStream(baos);
-			objectOutputStream.writeObject(object);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (objectOutputStream != null) {
-				try {
-					objectOutputStream.flush();
-					objectOutputStream.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-			if (baos != null) {
-				try {
-					baos.flush();
-					baos.close();
-					return baos.toString();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
+    public static String serializeOject(Object object) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos)) {
+            objectOutputStream.writeObject(object);
+            objectOutputStream.flush();
+            return baos.toString("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	public static Object deserializeObject(String serializedContent) {
-		byte[] bytes = serializedContent.getBytes();
-		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		ObjectInputStream objIn = null;
-		try {
-			objIn = new ObjectInputStream(bais);
-			try {
-				return objIn.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (objIn != null) {
-				try {
-					objIn.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
+    public static Object deserializeObject(String serializedContent) {
+        byte[] bytes;
+        try {
+            bytes = serializedContent.getBytes("UTF-8");
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                    ObjectInputStream objIn = new ObjectInputStream(bais)) {
+                return objIn.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

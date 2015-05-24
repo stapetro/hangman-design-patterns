@@ -32,7 +32,7 @@ public class GameStatePersister {
 			HashMap<String, String> properties = new HashMap<String, String>();
 			HangmanMemento gameStateMemento = gameState.getGameStateMemento();
 			String serializedContent = ObjectSerializerUtility
-					.serializeOject(gameStateMemento);			
+					.serializeOject(gameStateMemento);
 			String encodedSerializedContent = Base64Coder.encodeString(serializedContent);
 			properties.put(GameStateItemProperty.CONTENT.toString(),
 					encodedSerializedContent);
